@@ -1,4 +1,4 @@
-/* Shared by homo-post-machina-full.html and homo-post-machina-short.html */
+/* Shared by all decks in Newest Version/ and Alternatives/ */
 /* ---------- helpers ---------- */
 const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n)),mix=(a,b,t)=>a+(b-a)*t,sm=t=>{t=clamp(t);return t*t*(3-2*t)},ease=t=>{t=clamp(t);return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2},TAU=Math.PI*2;
 
