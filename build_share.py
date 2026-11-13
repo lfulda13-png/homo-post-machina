@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Baut aus den Arbeitsdateien je EINE HTML-Datei zum Teilen (Bilder, CSS und JS eingebettet).
 Aufruf im Ordner:  python3 build_share.py      Ergebnis landet in "Zum Teilen/".
-Die Online-Version wird danach mit  cd Online-Version && git commit -am Update && git push  veroeffentlicht."""
+Die Online-Version wird danach mit  git add -A && git commit -m Update && git push  veroeffentlicht."""
 import base64,mimetypes,os,re
 here=os.path.dirname(os.path.abspath(__file__));out=os.path.join(here,'Zum Teilen');os.makedirs(out,exist_ok=True)
 DECKS=['GPPN_Draft3_Long_Lux.html','GPPN_Draft_3_Lux.html','GPPN_VaniLong.html','GPPN_VaniShort.html']
@@ -19,6 +19,5 @@ for f in DECKS:
     h=h.replace('  Needs deck.css, deck.js and the assets/ folder next to this file.','  Single-file copy for sharing: images, CSS and JS are embedded. Edit the working file, then run build_share.py again.')
     assert 'src="assets/' not in h and 'deck.css"' not in h and 'src="deck.js"' not in h
     open(os.path.join(out,f),'w',encoding='utf-8').write(h);print('Zum Teilen/'+f,round(len(h)/1024),'KB')
-    if f==ONLINE:  # Kopie fuer den oeffentlichen Link (eigenes Git-Repo im Ordner Online-Version/)
-        web=os.path.join(here,'Online-Version');os.makedirs(web,exist_ok=True)
-        open(os.path.join(web,'index.html'),'w',encoding='utf-8').write(h.replace('<meta charset="UTF-8">','<meta charset="UTF-8">\n<meta name="robots" content="noindex">',1));print('Online-Version/index.html aktualisiert')
+    if f==ONLINE:  # index.html im Hauptordner = die Seite hinter dem oeffentlichen Link
+        open(os.path.join(here,'index.html'),'w',encoding='utf-8').write(h.replace('<meta charset="UTF-8">','<meta charset="UTF-8">\n<meta name="robots" content="noindex">',1));print('index.html (Online-Version) aktualisiert')
