@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homo post Machina · GPPN 2027 Pitch · Short deck</title>
+<!--
+  Short deck. 7 slides, about 2:40 spoken plus pauses, for the three-minute round.
+  Needs deck.css, deck.js and the assets/ folder next to this file.
+  HOW TO EDIT
+  · Slides are the <section class="slide"> blocks, in order. Each one shows completely on arrival (no extra clicks).
+  · <aside class="notes"> inside a slide = speaker notes. Press N to show them. data-time = seconds planned for the slide.
+  · data-cam / data-map / data-dim = map camera, highlight and brightness (poses are defined in deck.js).
+  KEYS  → / Space next · ← back · N speaker notes · T timer (turns red after 3:00) · F full screen · R replay slide
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="deck.css">
+</head>
+<body data-limit="180">
+<canvas id="map" aria-hidden="true"></canvas>
+<div id="paper"></div>
+<div id="stage">
+
+<!-- 1 -->
+<section class="slide" data-name="Opening" data-time="25" data-cam="title" data-map="title" data-dim=".42">
+ <div class="scr l"></div>
+ <figure class="portrait rv">
+  <img src="assets/ephantus-kanyugi.jpeg" alt="Portrait of Ephantus Kanyugi">
+  <b>Ephantus Kanyugi</b><span>Nairobi. Labelled data for AI for years. Today Vice President of the Data Labelers Association (DLA).</span>
+ </figure>
+ <div class="open">
+  <p class="bub b1 rv">“Some of my co‑workers had suicidal thoughts.”</p>
+  <div class="t2 rv" data-d="9"><small>GPPN 2027 · Technology and the Public Good</small><h1>Homo post <i>Machina</i></h1><p>Using Europe’s market power to secure fair work in AI supply chains</p></div>
+ </div>
+ <div class="oband rv" data-d="15">Before AI can learn, people label and filter its data by hand.<br>In the DLA’s survey, <b>6 in 10</b> call the work mentally exhausting.</div>
+ <div class="src">Interview with E. Kanyugi, Data Labelers Association (DLA), 15 October 2026 · Tijdens (2026), survey not representative</div>
+ <aside class="notes"><p>This is Ephantus Kanyugi from Nairobi. For years he labelled data so that AI could learn. He told us: “Some of my co-workers had suicidal thoughts.”</p>
+<p>Before AI can learn, people label and filter its data by hand. In the DLA’s own survey, six in ten call the work mentally exhausting. Our proposal, Homo post Machina, uses Europe’s market power to change that.</p></aside>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-name="US$1.30" data-time="25" data-cam="kenya" data-map="kenya" data-dim="1">
+ <div class="scr l"></div>
+ <div class="pad">
+  <div class="eyebrow red rv">Nairobi, Kenya</div>
+  <p class="wagepre rv"><span class="yr">In 2022,</span> OpenAI paid its Kenyan vendor <b>US$12.50</b> an hour. Workers took home <b>US$1.32–2</b>.</p>
+  <div class="drain rv">
+   <div class="dr"><span>OpenAI paid the vendor</span><div class="tr"><i class="g" style="--w:100%"></i></div><b>US$12.50</b></div>
+   <div class="dr"><span>Workers took home</span><div class="tr"><i class="c" style="--w:16%;--dl:1.5s"></i></div><b>US$1.32–2</b></div>
+  </div>
+  <p class="wagepre rv" data-d="8"><span class="yr">In 2026,</span> labellers in the DLA’s survey still earn about</p>
+  <div class="wage rv"><span class="bb" data-tag="our estimate · per hour"><sup>US$</sup>1.30</span><small>Four years on,<br>nothing has changed.</small></div>
+  <div class="ev rv" data-d="13">
+   <h4>How we know</h4>
+   <p>We work with the Data Labelers Association in Nairobi</p>
+   <p>Their pay survey with WageIndicator (not representative)</p>
+  </div>
+ </div>
+ <div class="src">Perrigo (2023, TIME): OpenAI–Sama contract · US$1.30 is our estimate based on Tijdens (2026)</div>
+ <aside class="notes"><p>In 2022, OpenAI paid its Kenyan vendor 12 dollars 50 an hour. The workers took home between 1.32 and 2 dollars.</p>
+<p>In 2026, labellers in the DLA’s survey still earn about 1 dollar 30 an hour. That is our estimate. Four years on, nothing has changed.</p>
+<p>We know this because we work with the Data Labelers Association and their pay survey.</p>
+<p><em>Backup: 2022 figures are the OpenAI–Sama contract (Perrigo 2023). US$1.30 is our own estimate from the DLA/WageIndicator survey (Tijdens 2026), which is not representative.</em></p></aside>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-name="Why the EU" data-time="25" data-cam="market" data-map="link" data-dim="1">
+ <div class="scr b" style="--a:300px;--b:380px"></div>
+ <div class="below two">
+  <div>
+   <div class="eyebrow gold bar rv" data-d="8">Why the EU</div>
+   <h2 class="h2 rv">The Brussels Effect</h2>
+   <p class="megalab rv">The AI built on this work is <b>sold here too</b>. 450 million consumers. One rulebook.</p>
+  </div>
+  <div>
+   <p class="lead rv">Whoever wants to sell in the EU follows EU rules. Many companies then apply them <b>worldwide</b>. The EU can use its market power to set <b>standards that travel</b>.</p>
+   <p class="kca rv"><b>Kenya can’t do this alone:</b> Scale AI’s platform Remotasks left Kenya in 2024, almost overnight.</p>
+  </div>
+ </div>
+ <div class="src">Bradford (2020) · Brandom (2024, Rest of World) · Regulations (EU) 2017/1369 and 2024/1781</div>
+ <aside class="notes"><p>Kenya can’t do this alone: when Scale AI’s platform Remotasks left Kenya in 2024, it happened almost overnight. But the AI built on this work is sold here too: 450 million consumers, one rulebook.</p>
+<p>This is the Brussels Effect. Whoever wants to sell in the EU follows EU rules, and many companies then apply them worldwide. The EU can use its market power to set standards that travel.</p>
+<p><em>Backup: we borrow two existing EU tools, the energy label and the ecodesign rules.</em></p></aside>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-name="Instrument 1" data-time="25" data-cam="eu" data-map="eu" data-dim=".16">
+ <div class="scr f"></div>
+ <div class="pad">
+  <div class="actor rv">Proposal for the <b>European Commission</b> · DG EMPL taskforce with the AI Office · <b>co-designed with the DLA</b></div>
+  <div class="eyebrow gold rv">Instrument 1</div>
+  <h2 class="h2 rv">Make the work visible</h2>
+  <div class="steps rv">
+   <div class="step"><i>1</i><div><b>“Who Made This AI?” campaign</b><span>told by the workers themselves</span></div></div>
+   <div class="step"><i>2</i><div><b>Public accountability database</b><span>what vendors disclose, checked against what workers report</span></div></div>
+   <div class="step"><i>3</i><div><b>Fair AI label</b><span>one rating for pay and conditions, independently verified</span></div></div>
+  </div>
+ </div>
+ <div class="side r rv" data-d="6">
+  <div class="label">
+   <div class="lhead"><b>FAIR AI</b><span>WHO MADE<br>THIS AI?</span></div>
+   <div class="lsub">AI system · supply-chain rating</div>
+   <div class="grades">
+    <div class="gr" style="--i:0;--w:40%;background:#00a651">A</div>
+    <div class="gr" style="--i:1;--w:47%;background:#4cb848">B</div>
+    <div class="gr" style="--i:2;--w:54%;background:#bfd730;color:#0c1a33">C</div>
+    <div class="gr" style="--i:3;--w:61%;background:#ffe600;color:#0c1a33">D</div>
+    <div class="gr" style="--i:4;--w:68%;background:#fdb913;color:#0c1a33">E</div>
+    <div class="gr" style="--i:5;--w:75%;background:#f37021">F</div>
+    <div class="gr" style="--i:6;--w:82%;background:#ed1c24">G</div>
+    <div class="ptr">B</div>
+   </div>
+   <div class="lrows">
+    <div class="lrow">Pay vs. local living wage<span>✓ verified</span></div>
+    <div class="lrow">Training and waiting time paid<span>✓ verified</span></div>
+    <div class="lrow">Safe conditions, mental health<span>✓ verified</span></div>
+   </div>
+   <div class="lfoot">Illustrative mock-up</div>
+  </div>
+ </div>
+ <aside class="notes"><p>We propose one policy for the European Commission, run by a taskforce in DG EMPL with the AI Office, and co-designed with the Data Labelers Association.</p>
+<p>Instrument one makes the work visible. A campaign, “Who Made This AI?”, told by the workers themselves. A public accountability database: what vendors disclose, checked against what workers report. And a Fair AI label that turns this into one rating, like the EU energy label.</p>
+<p><em>Backup: campaign modelled on the EU’s Safer Internet Day. Label thresholds tighten every two years, as with the energy label.</em></p></aside>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-name="Instrument 2" data-time="25" data-cam="eu" data-map="eu" data-dim=".16">
+ <div class="scr f"></div>
+ <div class="pad">
+  <div class="actor rv">Proposal for the <b>European Commission</b> · DG EMPL taskforce with the AI Office · <b>co-designed with the DLA</b></div>
+  <div class="eyebrow gold rv">Instrument 2</div>
+  <h2 class="h2 rv">Make fair work a condition</h2>
+  <div class="steps rv">
+   <div class="step"><i>1</i><div><b>Labour standard</b><span>locally benchmarked living wage, every hour paid incl. training, safe conditions</span><em>Builds on the DLA’s EU-funded Code of Conduct</em></div></div>
+   <div class="step"><i>2</i><div><b>First: public AI contracts</b><span>a condition in new EU AI tenders</span></div></div>
+   <div class="step"><i>3</i><div><b>Then: the whole EU market<mark class="tag">Proposed</mark></b><span>minimum requirements for AI sold here, after an independent evaluation</span></div></div>
+  </div>
+ </div>
+ <figure class="side r photo rv" data-d="6">
+  <img src="assets/data-annotators.jpg" alt="Two data annotators discussing how to label a dataset">
+  <figcaption>Photo: Nacho Kamenov &amp; Humans in the Loop, CC BY 4.0 (via Wikimedia Commons)</figcaption>
+ </figure>
+ <div class="reloc rv" data-d="12"><i>“The work will just move elsewhere.”</i>Once extended to the EU market, the rule covers AI sold here, wherever its data was labelled.</div>
+ <aside class="notes"><p>Instrument two makes fair work a condition. A labour standard: a locally benchmarked living wage, every hour paid including training, and safe conditions. It builds on the DLA’s own EU-funded Code of Conduct, so the EU works with Kenyan workers, not over their heads.</p>
+<p>First it becomes a condition in public AI contracts. Then, as a proposal, for the whole EU market.</p><p>And the work cannot just move away: once extended to the EU market, the rule covers AI sold here, wherever its data was labelled.</p>
+<p><em>Backup, cost objection: doubling workers’ pay raises the hourly contract cost by roughly 11–16%, other costs held constant (own calculation from Perrigo 2023). OpenAI’s compute spend in 2024 was an estimated US$5 billion (Epoch AI 2025).</em></p></aside>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-name="Implementation" data-time="25" data-cam="eu" data-map="eu" data-dim=".14">
+ <div class="scr f"></div>
+ <div class="pad">
+  <div class="eyebrow gold bar rv">Implementation</div>
+  <h2 class="h2 rv">Pilot first, then scale</h2>
+  <div class="tl4 rv">
+   <div class="ms"><small>Year 1</small><b>Pilot</b><p>Commission and DLA set up the pilot and co-design the standard.</p></div>
+   <div class="ms"><small>Years 2–3</small><b>Procurement and label rollout</b><p>Fair-work clauses in EU institutions’ AI tenders. Voluntary Fair AI label.</p></div>
+   <div class="ms"><small>Year 4</small><b>Independent evaluation</b><p>Wages, costs and relocation, before any expansion.</p></div>
+   <div class="ms prop"><small>Year 5+</small><b>Proposed EU market requirements</b><p>Subject to evaluation and legislative approval.</p></div>
+  </div>
+  <div class="scen rv" data-d="9">
+   <h4>Year 4 decides · three scenarios</h4>
+   <div>
+    <p style="--c:var(--gold)"><span>Works →</span> extend to EU market</p>
+    <p style="--c:var(--grey-t)"><span>Mixed →</span> simplify, extend pilot</p>
+    <p style="--c:var(--red-s)"><span>Vendors resist →</span> name them publicly, redesign</p>
+   </div>
+  </div>
+  <div class="yearly rv" data-d="12"><b>Every year</b>Anonymous worker reports <i>→</i> annual audits <i>→</i> updated ratings</div>
+ </div>
+ <aside class="notes"><p>We pilot first, then scale. Year one: the Commission and the DLA set up the pilot and co-design the standard. Years two and three: fair-work clauses in the EU institutions’ AI tenders, and the voluntary Fair AI label. Year four: an independent evaluation of wages, costs and relocation.</p>
+<p>It decides between three scenarios. If it works, we extend to the EU market. If results are mixed, we simplify and extend the pilot. If vendors resist, we name them publicly and redesign.</p>
+<p>And it corrects itself every year: anonymous worker reports, annual audits, updated ratings.</p>
+<p><em>Backup: taskforce in DG EMPL with the AI Office; database starts from wage data collected by local organisations; EU contracting authorities run the tenders; the year-5 step needs a Commission proposal and approval by Parliament and Council. “Vendors resist” = refuse, falsify data or relocate work.</em></p></aside>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-name="Close" data-time="10" data-cam="spread" data-map="spread" data-dim="1">
+ <div class="scr t" style="--a:270px;--b:350px"></div>
+ <div class="scr b" style="--a:100px;--b:170px"></div>
+ <div class="close"><h2 class="h2 rv">A standard that <i>travels.</i></h2><hr class="rv"><p class="rv">Kenya can’t solve this alone, but <b>Europe’s market power can.</b></p></div>
+ <div class="bye"><b class="rv" data-d="12">Lux Fulda · Vani Jupudi · Felix Schulte-Altedorneburg</b><img class="rv" data-d="13" src="assets/hertie-school-logo-transparent.png" alt="Hertie School"></div>
+ <aside class="notes"><p>A standard that travels: from Brussels to Nairobi, and to every place where this work is done. Kenya can’t solve this alone, but Europe’s market power can. Thank you.</p></aside>
+</section>
+
+</div>
+<div id="bar"></div>
+<div id="timer">0:00</div>
+<div id="notes"></div>
+<div id="nav"><div id="dots"></div><span class="t" id="count"></span><button class="t" id="nbtn" title="Speaker notes (N)">NOTES</button><button class="t" id="tbtn" title="Timer (T)">TIMER</button><button class="t" id="fs" title="Full screen (F)">FULL</button></div>
+<script src="deck.js"></script>
+</body>
+</html>

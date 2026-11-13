@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homo post Machina · GPPN 2027 Pitch</title>
+<!--
+  HOW TO EDIT
+  · Slides are the <section class="slide"> blocks, in order. Delete or reorder freely.
+  · data-cut="5 3" marks a slide as part of the 5-minute and/or 3-minute version (key C switches).
+  · data-cam = where the background map flies to: world | hubs | kenya | link | eu | spread
+  · data-map = what the map highlights: hubs | kenya | link | eu | spread (or empty)
+  · data-dim = map brightness on that slide (0–1).
+  · PHOTOS: find <div class="imgslot"> and put an image inside it, e.g.
+        <div class="imgslot"><img src="photos/joan-kinyua.jpg" alt="Joan Kinyua"></div>
+    The picture fills the frame automatically and the dashed placeholder disappears.
+  KEYS  → / Space next · ← back · C cut (all / 5 min / 3 min) · T timer · F full screen · R replay slide
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+ --bg:#040b1c;--bg2:#0a1d3d;--ink:#07132a;--text:#f4f7fc;--muted:#9db2cf;--line:rgba(140,190,255,.17);
+ --card:rgba(11,26,54,.82);--blue:#6fb6ff;--gold:#ffcc33;--coral:#ff6b57;--green:#3ddc97;
+ --font:'Manrope','Segoe UI',system-ui,sans-serif;--mono:'JetBrains Mono',ui-monospace,'SF Mono',Menlo,monospace;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:radial-gradient(120% 90% at 70% 10%,var(--bg2),var(--bg) 62%);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased}
+#map{position:fixed;inset:0;width:100vw;height:100vh;opacity:.5;transition:opacity 1.1s ease}
+#stage{position:fixed;left:0;top:0;width:1600px;height:900px;transform-origin:0 0}
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .38s ease,visibility 0s .38s}
+.slide.active{opacity:1;visibility:visible;transition:opacity .55s ease}
+.scrim-l::before,.scrim-f::before,.scrim-t::before{content:"";position:absolute;inset:-500px;pointer-events:none}
+.scrim-l::before{background:linear-gradient(90deg,rgba(4,11,28,.94) 0,rgba(4,11,28,.94) 500px,rgba(4,11,28,.72) 1180px,rgba(4,11,28,0) 1500px)}
+.scrim-f::before{background:rgba(4,11,28,.62)}
+.scrim-t::before{background:linear-gradient(180deg,rgba(4,11,28,.9) 0,rgba(4,11,28,.9) 760px,rgba(4,11,28,0) 1000px,rgba(4,11,28,0) 1180px,rgba(4,11,28,.9) 1330px)}
+.pad{position:absolute;inset:0;padding:78px 110px 90px}
+.center{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.rv{opacity:0}
+.play .rv{animation:rv .75s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--d,0)*95ms + 80ms)}
+@keyframes rv{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes fade{to{opacity:1}}
+.kicker{font:700 15px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px}
+.kicker::before{content:"";width:9px;height:9px;border:2px solid currentColor}
+.center .kicker{justify-content:center}
+.kicker.coral{color:var(--coral)}.kicker.green{color:var(--green)}.kicker.blue{color:var(--blue)}
+h1,h2,p{margin:0}
+.h2{font-size:60px;line-height:1.05;letter-spacing:-.045em;font-weight:800;margin-bottom:26px}
+.h2.sm{font-size:50px;margin-bottom:20px}
+.lead{font-size:27px;line-height:1.42;color:#dbe6f5;font-weight:500;max-width:760px}
+.lead b,.hl{color:var(--text);font-weight:800}
+.gold{color:var(--gold)}.coral{color:var(--coral)}.green{color:var(--green)}.blue{color:var(--blue)}.muted{color:var(--muted)}
+.src{position:absolute;left:110px;bottom:34px;font:500 12.5px var(--mono);color:rgba(157,178,207,.72);letter-spacing:.02em;max-width:1100px}
+.corner{position:absolute;right:110px;bottom:34px;font:700 12.5px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:rgba(157,178,207,.6)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px 26px}
+.pill{display:inline-flex;align-items:center;gap:14px;border:1px solid rgba(255,204,51,.45);background:rgba(255,204,51,.09);border-radius:999px;padding:14px 26px;font-size:22px;font-weight:700}
+.pill i{font:700 12px var(--mono);letter-spacing:.14em;text-transform:uppercase;font-style:normal;background:var(--gold);color:var(--ink);padding:5px 10px;border-radius:999px}
+.imgslot{position:relative;border:1.5px dashed rgba(140,190,255,.38);border-radius:18px;display:grid;place-items:center;color:var(--muted);font:500 12px var(--mono);letter-spacing:.1em;text-transform:uppercase;text-align:center;line-height:1.7;overflow:hidden;background:rgba(255,255,255,.03)}
+.imgslot img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.imgslot:has(img){border:0}
+
+/* annotation box: the labelling motif */
+.bb{position:relative;display:inline-block}
+.bb::before{content:"";position:absolute;inset:-6px -16px -2px;border:2.5px solid var(--bbc,var(--gold));clip-path:inset(0 100% 0 0);pointer-events:none}
+.bb::after{content:attr(data-tag);position:absolute;left:-16px;top:-6px;transform:translateY(-100%);background:var(--bbc,var(--gold));color:var(--ink);-webkit-text-fill-color:var(--ink);font:700 13px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;padding:6px 10px;white-space:nowrap;opacity:0}
+.play .bb::before{animation:bbdraw .8s cubic-bezier(.65,0,.2,1) var(--bbd,1.1s) forwards}
+.play .bb::after{animation:fade .25s calc(var(--bbd,1.1s) + .7s) forwards}
+@keyframes bbdraw{to{clip-path:inset(0 0 0 0)}}
+
+/* 1 title */
+.title{font-size:138px;line-height:1;letter-spacing:-.06em;font-weight:800;margin:26px 0 30px}
+.grad{background:linear-gradient(100deg,var(--blue),#fff 50%,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{font-size:31px;line-height:1.35;font-weight:500;color:#dbe6f5;max-width:1200px}
+.authors{margin-top:54px;font-size:21px;font-weight:700;letter-spacing:.01em}
+.aff{margin-top:9px;font:500 13px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+
+/* 2 hook */
+.hook{display:grid;grid-template-columns:1fr 560px;gap:80px;align-items:center;height:100%}
+.quote{font-size:84px;line-height:1.04;letter-spacing:-.05em;font-weight:800}
+.quote em{font-style:normal;color:var(--coral)}
+.who{display:flex;align-items:center;gap:20px;margin-top:44px}
+.who .imgslot{width:92px;height:92px;border-radius:50%;flex:none;font-size:10px}
+.who b{display:block;font-size:23px}.who span{color:var(--muted);font-size:17px;line-height:1.45;display:block;margin-top:3px}
+.tagline{font:700 13px var(--mono);letter-spacing:.2em;text-transform:uppercase;color:var(--blue);margin-bottom:12px}
+.chat{background:#f5f8fd;border-radius:20px;padding:20px;color:#0c1a33;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.msg{font-size:18px;line-height:1.4;font-weight:600;padding:12px 16px;border-radius:14px;max-width:86%}
+.msg.u{background:#0c1a33;color:#fff;margin-left:auto;width:fit-content}
+.msg.a{margin-top:10px;display:flex;gap:10px;align-items:flex-start;padding-left:4px}
+.msg.a::before{content:"";flex:none;width:22px;height:22px;border-radius:7px;background:linear-gradient(135deg,var(--blue),#2b62d9);margin-top:1px}
+.below{margin-top:26px;position:relative;padding-top:26px}
+.below::before{content:"";position:absolute;left:0;right:0;top:0;border-top:1.5px dashed rgba(255,107,87,.55)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.tile{position:relative;height:104px;border-radius:12px;background:rgba(255,255,255,.06);border:1px solid var(--line);opacity:0;transform:scale(.9)}
+.play .tile{animation:pop .45s cubic-bezier(.2,1.3,.4,1) calc(1.5s + var(--i)*.16s) forwards}
+@keyframes pop{to{opacity:1;transform:none}}
+.tile svg{position:absolute;left:50%;top:54%;width:64px;height:48px;transform:translate(-50%,-50%);stroke:#cfe0f7;fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.tile .bx{position:absolute;inset:26px 34px 12px;border:2px solid var(--gold)}
+.tile .bx b{position:absolute;left:-2px;top:-2px;transform:translateY(-100%);background:var(--gold);color:var(--ink);font:700 10.5px/1 var(--mono);letter-spacing:.06em;padding:4px 6px;white-space:nowrap;text-transform:uppercase}
+.tile.bad .bx{border-color:var(--coral)}.tile.bad .bx b{background:var(--coral)}
+.tile.bad svg{filter:blur(2.5px);opacity:.7}
+.cap{margin-top:16px;font-size:18px;color:var(--muted);font-weight:600}.cap b{color:var(--text)}
+
+/* 3 scale */
+.mega{font-size:176px;line-height:.92;letter-spacing:-.07em;font-weight:800;display:flex;align-items:baseline;gap:22px}
+.mega small{font-size:54px;letter-spacing:-.04em;color:var(--blue)}
+.megalab{font-size:25px;line-height:1.4;color:#dbe6f5;margin-top:16px;max-width:640px;font-weight:500}
+.chips{position:absolute;left:110px;bottom:92px;display:flex;gap:16px;align-items:stretch}
+.chip{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 22px}
+.chip b{display:block;font-size:34px;letter-spacing:-.04em;font-weight:800}
+.chip b small{font-size:17px;color:var(--muted);letter-spacing:0;font-weight:600}
+.chip span{display:block;font-size:15px;color:var(--muted);margin-top:4px;line-height:1.4}
+.chip.arrow{background:none;border:0;display:grid;place-items:center;padding:0 2px;font-size:28px;color:var(--coral)}
+
+/* 4 wage */
+.wagepre{font-size:26px;line-height:1.4;color:#dbe6f5;font-weight:500;max-width:680px}
+.wage{font-size:236px;line-height:.95;letter-spacing:-.075em;font-weight:800;color:var(--coral);margin:26px 0 6px;--bbc:var(--coral);--bbd:3.4s;font-variant-numeric:tabular-nums}
+.wage sup{font-size:70px;letter-spacing:-.04em;vertical-align:top;position:relative;top:22px;margin-right:6px}
+.wage small{font-size:44px;letter-spacing:-.03em;color:var(--text);margin-left:14px}
+.drain{margin-top:44px;width:720px;display:grid;gap:14px}
+.dr{display:grid;grid-template-columns:230px 1fr 150px;gap:18px;align-items:center;font-size:17px;color:var(--muted);font-weight:600}
+.dr b{color:var(--text);font-size:21px;text-align:right;font-weight:800}.dr b small{font-size:13px;color:var(--muted)}
+.tr{height:22px;border-radius:6px;background:rgba(255,255,255,.07);overflow:hidden}
+.tr i{display:block;height:100%;width:0;border-radius:6px;transition:width 1.4s cubic-bezier(.2,.8,.2,1) var(--dl,1.2s)}
+.play .tr i{width:var(--w)}
+.tr .g{background:linear-gradient(90deg,#b98a00,var(--gold))}.tr .c{background:linear-gradient(90deg,#c63a28,var(--coral))}
+.note{margin-top:18px;font-size:19px;color:#dbe6f5;font-weight:600}
+
+/* 5 chain */
+.chain{display:grid;grid-template-columns:1fr 70px 1fr 70px 1fr 70px 1fr;align-items:stretch;margin-top:16px}
+.node{border-radius:18px;padding:22px 22px 20px;border:1px solid var(--line);background:var(--card);position:relative;opacity:0;transform:translateY(18px)}
+.play .node{animation:rv .6s cubic-bezier(.16,1,.3,1) calc(.5s + var(--n)*.38s) both}
+.node small{font:700 12px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.node b{display:block;font-size:25px;letter-spacing:-.03em;margin:8px 0 6px}
+.node span{display:block;font-size:16px;line-height:1.45;color:var(--muted)}
+.node.dev{border-color:rgba(255,204,51,.55)}.node.wk{border-color:rgba(255,107,87,.7);background:rgba(60,18,22,.82)}
+.node.fog{background:repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 10px,rgba(255,255,255,.075) 10px 20px),var(--card);border-style:dashed}
+.lk{display:grid;place-items:center;color:var(--muted);font-size:26px;opacity:0}
+.play .lk{animation:fade .4s calc(.75s + var(--n)*.38s) forwards}
+.wedge{margin-top:30px;position:relative;height:150px}
+.wedge svg{width:100%;height:100%;display:block;clip-path:inset(0 100% 0 0)}
+.play .wedge svg{animation:bbdraw 2.2s cubic-bezier(.5,0,.2,1) 1.9s forwards}
+.wtag{position:absolute;font:700 14px var(--mono);letter-spacing:.06em;opacity:0}
+.play .wtag{animation:fade .5s var(--t) forwards}
+.facts{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:26px}
+.fact{font-size:19px;line-height:1.4;color:#dbe6f5;padding-left:18px;border-left:3px solid var(--coral);font-weight:500}
+.fact b{color:var(--text)}
+
+/* 6 conditions */
+.cond{display:grid;grid-template-columns:1fr 400px;gap:34px;margin-top:8px}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.ct{padding:24px 26px}
+.ct .n{font-size:66px;line-height:1;letter-spacing:-.055em;font-weight:800}
+.ct .n small{font-size:24px;letter-spacing:-.02em;color:var(--muted);font-weight:700}
+.ct p{font-size:19px;line-height:1.35;color:#dbe6f5;margin:10px 0 16px;font-weight:500}
+.ppl{display:flex;gap:9px}
+.ppl i{width:25px;height:25px;border-radius:50%;background:rgba(255,255,255,.11);transition:background .4s ease calc(1.2s + var(--i)*.09s),box-shadow .4s ease calc(1.2s + var(--i)*.09s)}
+.play .ppl i.on{background:var(--c,var(--coral));box-shadow:0 0 16px color-mix(in srgb,var(--c,var(--coral)) 55%,transparent)}
+.cond .imgslot{min-height:100%}
+.wline{margin-top:20px;font-size:20px;color:#dbe6f5;font-weight:600}
+
+/* 7 kenya alone */
+.rows{display:grid;gap:14px;width:720px;margin:6px 0 30px}
+.row{display:grid;grid-template-columns:58px 1fr;gap:18px;align-items:center;padding:18px 22px}
+.row svg{width:50px;height:50px;padding:11px;border-radius:14px;background:rgba(255,107,87,.13);stroke:var(--coral);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.row b{display:block;font-size:23px;letter-spacing:-.02em}.row span{display:block;font-size:17px;color:var(--muted);margin-top:3px;line-height:1.4}
+
+/* 8 brussels */
+.bigline{font-size:44px;line-height:1.18;letter-spacing:-.035em;font-weight:800;max-width:720px;margin:26px 0 38px}
+.bm{width:740px}
+.bm h4{font:700 13px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.bmrow{display:grid;grid-template-columns:1fr 34px 1fr;align-items:center;gap:10px;padding:13px 0;border-top:1px solid var(--line);font-size:20px;font-weight:700}
+.bmrow span{color:var(--muted);font-weight:600}.bmrow i{color:var(--gold);font-style:normal;text-align:center}
+
+/* 9 policy */
+.pol{width:1260px;margin:0 auto;display:flex;flex-direction:column;align-items:center}
+.cod{border:1.5px solid rgba(61,220,151,.6);background:rgba(61,220,151,.1);border-radius:14px;padding:11px 26px;text-align:center}
+.cod b{display:block;font-size:19px}.cod span{font-size:15px;color:var(--muted)}
+.vl{width:2px;height:34px;background:linear-gradient(var(--green),var(--gold));position:relative}
+.vl em{position:absolute;left:14px;top:8px;font:700 11px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--green);white-space:nowrap;font-style:normal}
+.ec{background:linear-gradient(100deg,#123a8c,#1b4fb8);border:1.5px solid var(--gold);border-radius:14px;padding:13px 44px;text-align:center;box-shadow:0 14px 50px rgba(27,79,184,.4)}
+.ec b{display:block;font-size:24px;letter-spacing:-.02em}.ec span{font-size:15.5px;color:#cfdcf5}
+.fork{width:1260px;height:40px;display:block}
+.fork path{fill:none;stroke:var(--gold);stroke-width:2;stroke-dasharray:700;stroke-dashoffset:700}
+.play .fork path{animation:dash 1s ease var(--t,1s) forwards}
+@keyframes dash{to{stroke-dashoffset:0}}
+.insts{display:grid;grid-template-columns:1fr 1fr;gap:44px;width:100%}
+.inst{padding:20px 24px 22px;border-radius:20px;border:1px solid var(--line);background:var(--card)}
+.inst h3{margin:0 0 4px;font:700 13px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--c)}
+.inst h4{margin:0 0 14px;font-size:28px;letter-spacing:-.03em}
+.step{display:grid;grid-template-columns:38px 1fr;gap:14px;align-items:start;padding:9px 0;position:relative}
+.step i{width:34px;height:34px;border-radius:50%;border:2px solid var(--c);color:var(--c);display:grid;place-items:center;font:700 14px var(--mono);font-style:normal;background:var(--ink);position:relative;z-index:1}
+.step:not(:last-child)::after{content:"";position:absolute;left:16px;top:42px;bottom:-10px;width:2px;background:color-mix(in srgb,var(--c) 45%,transparent)}
+.step b{display:block;font-size:20px;letter-spacing:-.015em}.step span{display:block;font-size:15.5px;color:var(--muted);line-height:1.4;margin-top:1px}
+.outc{background:linear-gradient(100deg,#e0a900,var(--gold));color:var(--ink);border-radius:14px;padding:14px 34px;font-size:21px;font-weight:800;display:flex;gap:26px;align-items:center}
+.outc i{width:6px;height:6px;border-radius:50%;background:var(--ink);opacity:.5}
+
+/* 10 instrument 1 */
+.two{display:grid;grid-template-columns:1fr 430px;gap:70px;align-items:center}
+.bigsteps{display:grid;gap:16px}
+.bs{display:grid;grid-template-columns:64px 1fr;gap:20px;align-items:center;padding:20px 24px}
+.bs i{width:60px;height:60px;border-radius:16px;display:grid;place-items:center;font:700 22px var(--mono);font-style:normal;background:color-mix(in srgb,var(--c,var(--blue)) 16%,transparent);color:var(--c,var(--blue))}
+.bs b{display:block;font-size:25px;letter-spacing:-.025em}.bs span{display:block;font-size:17.5px;color:var(--muted);line-height:1.42;margin-top:4px}
+.bs em{font:700 11.5px var(--mono);font-style:normal;letter-spacing:.12em;text-transform:uppercase;color:var(--c,var(--blue));display:block;margin-top:8px}
+.label{background:#fff;color:#0c1a33;border-radius:16px;overflow:hidden;box-shadow:0 40px 110px rgba(0,0,0,.55),0 0 0 6px rgba(255,255,255,.08);transform:rotate(2deg)}
+.lhead{background:#1b4fb8;color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center}
+.lhead b{font-size:30px;letter-spacing:-.03em;font-weight:800}.lhead span{font:700 11px var(--mono);letter-spacing:.14em;text-align:right;line-height:1.5}
+.lsub{padding:12px 22px 4px;font:700 12px var(--mono);letter-spacing:.08em;color:#5b6b85;text-transform:uppercase}
+.grades{padding:8px 22px 12px;position:relative}
+.gr{height:34px;margin:5px 0;width:0;clip-path:polygon(0 0,calc(100% - 17px) 0,100% 50%,calc(100% - 17px) 100%,0 100%);display:flex;align-items:center;padding-left:12px;font-weight:800;font-size:19px;color:#fff;transition:width .7s cubic-bezier(.2,.9,.3,1) calc(1.1s + var(--i)*.09s)}
+.play .gr{width:var(--w)}
+.ptr{position:absolute;right:22px;top:52px;height:34px;width:84px;background:#0c1a33;color:#fff;clip-path:polygon(17px 0,100% 0,100% 100%,17px 100%,0 50%);display:flex;align-items:center;justify-content:center;padding-left:10px;font-weight:800;font-size:22px;opacity:0;transform:translateX(30px)}
+.play .ptr{animation:ptr .5s cubic-bezier(.2,1.2,.4,1) 2.1s forwards}
+@keyframes ptr{to{opacity:1;transform:none}}
+.lrows{border-top:2px solid #0c1a33;margin:0 22px;padding:10px 0 4px}
+.lrow{display:flex;justify-content:space-between;font-size:15.5px;font-weight:700;padding:6px 0}.lrow span{color:#0a8f52}
+.lfoot{padding:8px 22px 14px;font:500 10.5px var(--mono);letter-spacing:.06em;color:#7a879c;text-transform:uppercase}
+
+/* 11 instrument 2 */
+.pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.pl{padding:24px 26px;border-top:3px solid var(--green)}
+.pl svg{width:44px;height:44px;stroke:var(--green);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.pl b{display:block;font-size:27px;letter-spacing:-.03em;margin:12px 0 5px}.pl span{font-size:17.5px;color:var(--muted);line-height:1.42;display:block}
+.based{margin:18px 0 26px;font-size:18px;color:var(--muted);font-weight:600}
+.phases{display:grid;grid-template-columns:1fr 150px 1.12fr;align-items:end}
+.ph{padding:24px 28px;border-radius:18px}
+.ph small{font:700 13px var(--mono);letter-spacing:.18em;text-transform:uppercase}
+.ph b{display:block;font-size:30px;letter-spacing:-.03em;margin:8px 0 6px}.ph span{font-size:18px;line-height:1.42;display:block}
+.ph.p1{background:rgba(61,220,151,.12);border:1.5px solid rgba(61,220,151,.55)}.ph.p1 small{color:var(--green)}.ph.p1 span{color:#cfe0f7}
+.ph.p2{background:linear-gradient(120deg,#0e7a50,#12a06a);padding-top:44px;padding-bottom:34px;box-shadow:0 20px 70px rgba(18,160,106,.3)}.ph.p2 small{color:#c9ffe6}
+.gate{text-align:center;font:700 11.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--gold);padding:0 10px 36px;line-height:1.6}
+.gate::before{content:"→";display:block;font-size:34px;font-family:var(--font);margin-bottom:4px}
+
+/* 12 cost */
+.costn{font-size:214px;line-height:.92;letter-spacing:-.075em;font-weight:800;color:var(--gold);margin:14px 0 10px}
+.costn small{font-size:72px;letter-spacing:-.04em}
+.costbars{display:grid;gap:26px}
+.cb h5{margin:0 0 9px;font:700 13px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted);display:flex;justify-content:space-between}
+.cb h5 b{color:var(--text);font-size:15px;letter-spacing:.04em}
+.cbar{display:flex;height:60px;width:0;border-radius:10px;overflow:hidden;transition:width 1.3s cubic-bezier(.2,.8,.2,1) var(--dl,1s)}
+.play .cbar{width:var(--w)}
+.cbar i{display:grid;place-items:center;font:700 14px var(--mono);font-style:normal;white-space:nowrap;overflow:hidden}
+.cbar .w{background:var(--coral);color:var(--ink)}.cbar .w2{background:var(--green);color:var(--ink)}.cbar .o{background:rgba(255,255,255,.13);color:#cfe0f7;flex:1}
+.ctx{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:30px}
+.ctx .chip b{font-size:28px}
+
+/* 13 roadmap */
+.road{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;position:relative;padding-top:54px;margin-top:6px}
+.road::before{content:"";position:absolute;left:20px;right:20px;top:17px;height:3px;border-radius:3px;background:linear-gradient(90deg,var(--blue),var(--blue) 45%,var(--gold) 62%,var(--green) 85%);transform:scaleX(0);transform-origin:left}
+.play .road::before{animation:grow 2.2s cubic-bezier(.4,0,.2,1) .5s forwards}
+@keyframes grow{to{transform:scaleX(1)}}
+.st{position:relative;padding:20px 22px 22px;opacity:0}
+.play .st{animation:rv .65s cubic-bezier(.16,1,.3,1) calc(.6s + var(--n)*.5s) both}
+.st::before{content:"";position:absolute;left:22px;top:-47px;width:20px;height:20px;border-radius:50%;background:var(--ink);border:3.5px solid var(--c,var(--blue));box-shadow:0 0 22px var(--c,var(--blue))}
+.st.gatest::before{border-radius:3px;transform:rotate(45deg);background:var(--gold)}
+.st small{font:700 13px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--c,var(--blue))}
+.st b{display:block;font-size:28px;letter-spacing:-.03em;margin:6px 0 12px}
+.st ul{margin:0;padding:0;list-style:none;display:grid;gap:9px}
+.st li{font-size:17px;line-height:1.38;color:#dbe6f5;padding-left:16px;position:relative}
+.st li::before{content:"";position:absolute;left:0;top:9px;width:6px;height:6px;border-radius:50%;background:var(--c,var(--blue))}
+.loop{margin-top:22px;display:flex;align-items:center;gap:20px;padding:16px 26px;border-radius:16px;border:1px dashed rgba(140,190,255,.4);font-size:19px;color:#dbe6f5;font-weight:500}
+.loop svg{width:38px;height:38px;flex:none;stroke:var(--blue);fill:none;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
+.play .loop svg{animation:spin 7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loop b{color:var(--text)}
+
+/* 14 scenarios */
+.scen{display:grid;grid-template-columns:400px 200px 1fr;align-items:center;margin-top:10px}
+.evalc{padding:28px;border-color:rgba(255,204,51,.6)}
+.evalc small{font:700 13px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--gold)}
+.evalc b{display:block;font-size:32px;letter-spacing:-.03em;line-height:1.1;margin:8px 0 14px}
+.evalc span{display:block;font-size:17.5px;color:var(--muted);line-height:1.6}
+.scen svg{width:200px;height:480px;display:block}
+.scen svg path{fill:none;stroke-width:2.6;stroke-dasharray:420;stroke-dashoffset:420}
+.play .scen svg path{animation:dash 1s ease var(--t) forwards}
+.sc{display:grid;gap:18px}
+.scard{display:grid;grid-template-columns:250px 34px 1fr;gap:16px;align-items:center;padding:22px 26px;border-radius:18px;border:1.5px solid color-mix(in srgb,var(--c) 60%,transparent);background:color-mix(in srgb,var(--c) 10%,rgba(11,26,54,.85));min-height:136px;opacity:0}
+.play .scard{animation:rv .6s cubic-bezier(.16,1,.3,1) var(--t) both}
+.scard small{font:700 12.5px var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--c)}
+.scard b{display:block;font-size:25px;letter-spacing:-.025em;margin-top:5px}
+.scard span{display:block;font-size:16.5px;color:var(--muted);margin-top:4px;line-height:1.35}
+.scard i{font-style:normal;color:var(--c);font-size:26px;text-align:center}
+.scard p{font-size:20px;line-height:1.35;font-weight:700}
+
+/* 15 stakeholders */
+.stk{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:8px}
+.col h3{margin:0 0 14px;font:700 13px var(--mono);letter-spacing:.16em;text-transform:uppercase;color:var(--c);padding-bottom:12px;border-bottom:2px solid var(--c)}
+.sk{padding:16px 18px;border-radius:14px;background:var(--card);border:1px solid var(--line);margin-bottom:12px}
+.sk b{display:block;font-size:20px;letter-spacing:-.02em}.sk span{display:block;font-size:15.5px;color:var(--muted);line-height:1.4;margin-top:3px}
+.sk em{display:block;font-style:normal;font-size:15px;color:var(--green);margin-top:7px;font-weight:700;line-height:1.35}
+
+/* 16 close */
+.closing::before{content:"";position:absolute;left:-500px;right:-500px;bottom:-500px;height:800px;background:linear-gradient(0deg,rgba(4,11,28,.96) 620px,rgba(4,11,28,0));pointer-events:none}
+.close{position:absolute;left:0;right:0;top:64px;text-align:center}
+.close .h2{font-size:84px;margin-bottom:22px}
+.outs{display:flex;justify-content:center;gap:16px}
+.out{border:1px solid rgba(61,220,151,.5);background:rgba(8,30,40,.8);border-radius:999px;padding:13px 26px;font-size:21px;font-weight:700;display:flex;align-items:center;gap:12px}
+.out::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 14px var(--green)}
+.bye{position:absolute;left:0;right:0;bottom:74px;text-align:center}
+.bye p{font-size:30px;font-weight:800;letter-spacing:-.03em}
+.bye span{display:block;margin-top:10px;font:500 13px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+
+/* chrome */
+#nav{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:7px 14px;border-radius:999px;background:rgba(4,11,28,.7);border:1px solid var(--line);opacity:0;transition:opacity .4s;z-index:10}
+body.nav-on #nav,#nav:hover{opacity:1}
+#dots{display:flex;gap:6px}
+#dots button{width:8px;height:8px;border-radius:50%;border:0;padding:0;background:rgba(157,178,207,.4);cursor:pointer}
+#dots button.on{background:var(--gold);transform:scale(1.35)}
+#dots button.off{opacity:.25}
+#nav .t{font:700 11.5px var(--mono);color:var(--muted);letter-spacing:.08em;background:none;border:0;cursor:pointer;padding:3px 4px}
+#nav .t:hover{color:var(--text)}
+#timer{position:fixed;right:18px;top:14px;font:700 20px var(--mono);color:var(--gold);background:rgba(4,11,28,.75);border:1px solid var(--line);border-radius:10px;padding:6px 12px;display:none;z-index:10}
+#timer.over{color:var(--coral)}
+#bar{position:fixed;left:0;top:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--gold));width:0;transition:width .5s ease;z-index:10}
+</style>
+</head>
+<body>
+<canvas id="map" aria-hidden="true"></canvas>
+<div id="stage">
+
+<!-- 1 · TITLE -->
+<section class="slide scrim-f" data-name="Title" data-cam="world" data-map="" data-dim=".6" data-cut="5 3">
+ <div class="pad center">
+  <div class="kicker rv">GPPN 2027 · Technology and the Public Good</div>
+  <h1 class="title rv"><span class="bb" data-tag="human · 0.99">Homo</span> post <span class="grad">Machina</span></h1>
+  <p class="sub rv">Using Europe’s market power to secure fair work in AI supply chains</p>
+  <div class="authors rv">Lux Fulda · Vani Jupudi · Felix Schulte-Altedorneburg</div>
+  <div class="aff rv">Hertie School</div>
+ </div>
+</section>
+
+<!-- 2 · HOOK -->
+<section class="slide scrim-f" data-name="Hook" data-cam="world" data-map="" data-dim=".3" data-cut="5 3">
+ <div class="pad"><div class="hook">
+  <div>
+   <div class="kicker coral rv">The part of AI nobody sees</div>
+   <p class="quote rv">“You see the AI, but you don’t <em>see us</em>.”</p>
+   <div class="who rv">
+    <div class="imgslot">Photo</div>
+    <div><b>Joan Kinyua</b><span>President, Data Labelers Association (Kenya)<br>to the German Bundestag, April 2026</span></div>
+   </div>
+  </div>
+  <div>
+   <div class="rv"><div class="tagline">What you see</div>
+    <div class="chat"><div class="msg u">Is it safe to cross here?</div><div class="msg a">Yes. One pedestrian, one cyclist, no cars approaching.</div></div>
+   </div>
+   <div class="below rv"><div class="tagline coral">What it takes</div>
+    <div class="tiles">
+     <div class="tile" style="--i:0"><svg viewBox="0 0 64 48"><circle cx="32" cy="9" r="4.5"/><path d="M32 14v15M32 18l-8 6M32 18l8 6M32 29l-6 14M32 29l6 14"/></svg><div class="bx"><b>pedestrian</b></div></div>
+     <div class="tile" style="--i:1"><svg viewBox="0 0 64 48"><circle cx="17" cy="34" r="9"/><circle cx="47" cy="34" r="9"/><path d="M17 34l10-16h12l8 16M27 18l8 16H17M37 12h6"/></svg><div class="bx"><b>cyclist</b></div></div>
+     <div class="tile" style="--i:2"><svg viewBox="0 0 64 48"><path d="M8 32v-7l8-3 6-9h18l8 9 8 3v7z"/><circle cx="20" cy="33" r="5"/><circle cx="45" cy="33" r="5"/></svg><div class="bx"><b>car</b></div></div>
+     <div class="tile bad" style="--i:3"><svg viewBox="0 0 64 48"><path d="M8 12h48M8 21h40M8 30h46M8 39h28"/></svg><div class="bx"><b>hate speech ✕</b></div></div>
+     <div class="tile bad" style="--i:4"><svg viewBox="0 0 64 48"><rect x="8" y="6" width="48" height="36" rx="4"/><path d="M8 34l14-12 10 8 8-6 16 12"/><circle cx="44" cy="16" r="4"/></svg><div class="bx"><b>violence ✕</b></div></div>
+     <div class="tile bad" style="--i:5"><svg viewBox="0 0 64 48"><rect x="8" y="6" width="48" height="36" rx="4"/><path d="M27 17l12 7-12 7z"/></svg><div class="bx"><b>abuse ✕</b></div></div>
+    </div>
+    <p class="cap"><b>Millions</b> of images and texts, labelled and filtered by hand.</p>
+   </div>
+  </div>
+ </div></div>
+ <div class="src">Deutscher Bundestag (2026); interview with J. Kinyua &amp; E. Kanyugi, 15 Oct 2026</div><div class="corner">01 · Hook</div>
+</section>
+
+<!-- 3 · SCALE -->
+<section class="slide scrim-t" data-name="Scale" data-cam="hubs" data-map="hubs" data-dim="1" data-cut="5">
+ <div class="pad">
+  <div class="kicker rv">A global, hidden workforce</div>
+  <div class="mega rv"><span><span data-count="154">154</span>–<span data-count="435">435</span></span><small>million</small></div>
+  <p class="megalab rv">online gig workers worldwide: up to <b>12.5%</b> of the global labour force. AI data work is concentrated in emerging economies.</p>
+ </div>
+ <div class="chips">
+  <div class="chip rv"><b>US$4.43<small> /hour</small></b><span>average crowdwork pay,<br>paid time only (ILO survey)</span></div>
+  <div class="chip arrow rv">→</div>
+  <div class="chip rv"><b class="coral">US$3.30<small> /hour</small></b><span>once unpaid time<br>is counted</span></div>
+  <div class="chip rv"><b>≥ 30<small> vendors</small></b><span>sit between Big Tech<br>and the people labelling</span></div>
+ </div>
+ <div class="src">Datta et al. (2023, World Bank); Berg et al. (2018, ILO); SOMO (2026)</div><div class="corner">02 · Scale</div>
+</section>
+
+<!-- 4 · KENYA WAGE -->
+<section class="slide scrim-l" data-name="US$1.30" data-cam="kenya" data-map="kenya" data-dim="1" data-cut="5 3">
+ <div class="pad">
+  <div class="kicker coral rv">Case · Kenya · Nairobi</div>
+  <p class="wagepre rv">An AI developer pays <b>US$12.50</b> for an hour of data work.<br>The person doing it takes home about</p>
+  <div class="wage rv"><span class="bb" data-tag="take-home pay · per hour"><sup>US$</sup><span data-count="1.30" data-from="12.50" data-dec="2" data-dur="2300" data-delay="900">12.50</span></span></div>
+  <div class="drain rv">
+   <div class="dr"><span>Developer pays vendor</span><div class="tr"><i class="g" style="--w:100%"></i></div><b>US$12.50<small> /h</small></b></div>
+   <div class="dr"><span>Worker takes home</span><div class="tr"><i class="c" style="--w:16%;--dl:2s"></i></div><b>US$1.32–2<small> /h</small></b></div>
+  </div>
+  <p class="note rv">Only <span class="coral">11–16%</span> of the contract price reaches the worker.</p>
+ </div>
+ <div class="src">Perrigo (2023, TIME): OpenAI–Sama contract · US$1.30 is the authors’ estimate based on Tijdens (2026)</div><div class="corner">03 · Problem</div>
+</section>
+
+<!-- 5 · OPAQUE CHAIN -->
+<section class="slide scrim-f" data-name="Opaque chain" data-cam="kenya" data-map="kenya" data-dim=".22">
+ <div class="pad">
+  <div class="kicker coral rv">Where the money goes</div>
+  <h2 class="h2 rv">An opaque chain between model and maker</h2>
+  <div class="chain">
+   <div class="node dev" style="--n:0"><small>AI developer</small><b>Pays US$12.50 /h</b><span>OpenAI–Sama contract</span></div>
+   <div class="lk" style="--n:0">→</div>
+   <div class="node fog" style="--n:1"><small>Vendor or platform</small><b>BPOs, Remotasks, MTurk</b><span>≥ 30 vendors serve Big Tech · pay per task</span></div>
+   <div class="lk" style="--n:1">→</div>
+   <div class="node fog" style="--n:2"><small>Subcontractor</small><b>Local BPO or broker</b><span>end client often unknown</span></div>
+   <div class="lk" style="--n:2">→</div>
+   <div class="node wk" style="--n:3"><small>Data worker · Nairobi</small><b class="coral">Gets US$1.32–2 /h</b><span>only 4 in 10 have a contract</span></div>
+  </div>
+  <div class="wedge">
+   <svg viewBox="0 0 1380 150" preserveAspectRatio="none"><defs><linearGradient id="wg" x1="0" x2="1"><stop offset="0" stop-color="#ffcc33"/><stop offset=".3" stop-color="#ffcc33" stop-opacity=".5"/><stop offset=".72" stop-color="#ff6b57" stop-opacity=".45"/><stop offset="1" stop-color="#ff6b57"/></linearGradient><pattern id="hz" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="7" height="14" fill="#040b1c" opacity=".55"/></pattern></defs>
+    <path d="M0 10H300C620 10 760 66 1080 66H1380V84H1080C760 84 620 140 300 140H0Z" fill="url(#wg)"/>
+    <path d="M300 10C620 10 760 66 1080 66V84C760 84 620 140 300 140Z" fill="url(#hz)"/>
+   </svg>
+   <span class="wtag gold" style="left:0;top:-22px;--t:2.2s">US$12.50</span>
+   <span class="wtag muted" style="left:590px;top:-22px;--t:3s">WHO KEEPS WHAT? NOT DISCLOSED</span>
+   <span class="wtag coral" style="right:0;top:34px;--t:3.9s">US$1.32–2</span>
+  </div>
+  <div class="facts">
+   <p class="fact rv" data-d="26"><b>Independent contractors</b>, paid per task: pay depends on speed and approval.</p>
+   <p class="fact rv" data-d="28"><b>Over half</b> of platform workers report tasks that were never paid.</p>
+   <p class="fact rv" data-d="30"><b>No one can verify</b> what a model’s supply chain pays.</p>
+  </div>
+ </div>
+ <div class="src">Perrigo (2023); SOMO (2026); Tijdens (2026); Gutelius &amp; Theodore (2025)</div><div class="corner">04 · Chain</div>
+</section>
+
+<!-- 6 · CONDITIONS -->
+<section class="slide scrim-f" data-name="Conditions" data-cam="kenya" data-map="kenya" data-dim=".2">
+ <div class="pad">
+  <div class="kicker coral rv">Kenyan data labellers · DLA survey</div>
+  <h2 class="h2 rv">Behind the number</h2>
+  <div class="cond">
+   <div>
+    <div class="cgrid">
+     <div class="card ct rv"><div class="n">4 <small>in 10</small></div><p>have a contract</p><div class="ppl" data-n="10" data-on="4" style="--c:var(--gold)"></div></div>
+     <div class="card ct rv"><div class="n">1 <small>in 4</small></div><p>earns enough to cover living costs</p><div class="ppl" data-n="4" data-on="1" style="--c:var(--gold)"></div></div>
+     <div class="card ct rv"><div class="n">6 <small>in 10</small></div><p>find the work mentally exhausting</p><div class="ppl" data-n="10" data-on="6"></div></div>
+     <div class="card ct rv"><div class="n">&gt;½</div><p>report unpaid tasks</p><div class="ppl" data-n="10" data-on="6"></div></div>
+    </div>
+    <p class="wline rv">Women earn <span class="coral">below Nairobi’s minimum wage</span> for comparable work.</p>
+   </div>
+   <div class="imgslot rv">Photo<br>data workers / DLA<br>Nairobi</div>
+  </div>
+ </div>
+ <div class="src">Tijdens (2026, WageIndicator; survey not representative); Gutelius &amp; Theodore (2025)</div><div class="corner">05 · Conditions</div>
+</section>
+
+<!-- 7 · KENYA CANNOT FIX IT ALONE -->
+<section class="slide scrim-l" data-name="Not alone" data-cam="link" data-map="link" data-dim="1" data-cut="5">
+ <div class="pad">
+  <div class="kicker coral rv">Why not regulate locally?</div>
+  <h2 class="h2 rv">Kenya cannot fix<br>this alone</h2>
+  <div class="rows">
+   <div class="card row rv"><svg viewBox="0 0 28 28"><path d="M4 22h20M7 22V11M12 22V11M17 22V11M22 22V11M3 11l11-7 11 7z"/></svg><div><b>A government courting investors</b><span>Kenya hesitates to act against the firms it wants to attract.</span></div></div>
+   <div class="card row rv"><svg viewBox="0 0 28 28"><path d="M11 5H5v18h6M12 14h12M19 9l5 5-5 5"/></svg><div><b>Platforms can leave overnight</b><span>Remotasks pulled out of Kenya in 2024, without explanation.</span></div></div>
+   <div class="card row rv"><svg viewBox="0 0 28 28"><path d="M3 14s4-7 11-7 11 7 11 7-4 7-11 7S3 14 3 14z"/><path d="M5 23L23 5"/></svg><div><b>Chains nobody can see into</b><span>Workers often do not know whose model they train.</span></div></div>
+  </div>
+  <div class="pill rv"><i>So</i>Lasting change has to come from the <span class="gold">demand side</span></div>
+ </div>
+ <div class="src">Interview with DLA leadership (2026); Brandom (2024, Rest of World)</div><div class="corner">06 · Governance gap</div>
+</section>
+
+<!-- 8 · BRUSSELS EFFECT -->
+<section class="slide scrim-l" data-name="Brussels Effect" data-cam="eu" data-map="eu" data-dim="1" data-cut="5 3">
+ <div class="pad">
+  <div class="kicker rv">The lever · European Union</div>
+  <h2 class="h2 rv">The Brussels Effect</h2>
+  <p class="lead rv">EU rules become <b>global standards</b>, because firms extend them worldwide.</p>
+  <p class="bigline rv">AI models are trained once<br>and <span class="gold">sold everywhere.</span></p>
+  <div class="bm rv">
+   <h4>Built on tools the EU already uses</h4>
+   <div class="bmrow"><span>EU energy label</span><i>→</i>Fair AI label</div>
+   <div class="bmrow"><span>Ecodesign rules</span><i>→</i>Minimum labour standard</div>
+   <div class="bmrow"><span>Safer Internet Day</span><i>→</i>“Who Made This AI?”</div>
+  </div>
+ </div>
+ <div class="src">Bradford (2020); Regulation (EU) 2017/1369; European Commission (2026)</div><div class="corner">07 · Lever</div>
+</section>
+
+<!-- 9 · POLICY OVERVIEW -->
+<section class="slide scrim-f" data-name="Two instruments" data-cam="eu" data-map="eu" data-dim=".16" data-cut="5 3">
+ <div class="pad" style="padding-top:52px">
+  <div class="kicker rv">Our proposal</div>
+  <h2 class="h2 sm rv">One policy, two instruments</h2>
+  <div class="pol">
+   <div class="cod rv"><b>Data Labelers Association, unions, worker NGOs</b></div>
+   <div class="vl rv"><em>co-design &amp; verify</em></div>
+   <div class="ec rv"><b>European Commission</b><span>DG EMPL taskforce with the European AI Office</span></div>
+   <svg class="fork" viewBox="0 0 1260 40"><path d="M630 0V14Q630 22 620 22H318Q308 22 308 30V40" style="--t:1.1s"/><path d="M630 0V14Q630 22 640 22H942Q952 22 952 30V40" style="--t:1.1s"/></svg>
+   <div class="insts">
+    <div class="inst rv" data-d="10" style="--c:var(--blue)"><h3>Instrument 1 · Visibility</h3><h4>Make the work visible</h4>
+     <div class="step"><i>1</i><div><b>“Who Made This AI?”</b><span>multilingual campaign told through workers’ stories</span></div></div>
+     <div class="step"><i>2</i><div><b>Public accountability database</b><span>vendor disclosures checked against worker pay data</span></div></div>
+     <div class="step"><i>3</i><div><b>Fair AI label</b><span>simple rating of pay and conditions</span></div></div>
+    </div>
+    <div class="inst rv" data-d="13" style="--c:var(--green)"><h3>Instrument 2 · Standard</h3><h4>Make fair work a condition</h4>
+     <div class="step"><i>1</i><div><b>Labour standard</b><span>living wage · paid training · safe conditions</span></div></div>
+     <div class="step"><i>2</i><div><b>Phase 1: public procurement</b><span>condition for every new public AI contract</span></div></div>
+     <div class="step"><i>3</i><div><b>Phase 2: EU market</b><span>minimum requirements for all AI products and services</span></div></div>
+    </div>
+   </div>
+   <svg class="fork" viewBox="0 0 1260 40" style="height:30px"><path d="M308 0V10Q308 18 318 18H620Q630 18 630 26V40" style="--t:2.3s"/><path d="M952 0V10Q952 18 942 18H640Q630 18 630 26V40" style="--t:2.3s"/></svg>
+   <div class="outc rv" data-d="24">Visible supply chains<i></i>Higher effective hourly pay<i></i>A standard that travels globally</div>
+  </div>
+ </div>
+ <div class="corner">08 · Policy</div>
+</section>
+
+<!-- 10 · INSTRUMENT 1 -->
+<section class="slide scrim-f" data-name="Visibility" data-cam="eu" data-map="eu" data-dim=".16">
+ <div class="pad">
+  <div class="kicker blue rv">Instrument 1 · Visibility</div>
+  <h2 class="h2 rv">“Who Made This AI?”</h2>
+  <div class="two">
+   <div class="bigsteps">
+    <div class="card bs rv"><i>1</i><div><b>Awareness campaign</b><span>Multilingual, told through workers’ own stories. Builds public support for labour requirements.</span><em>Model: Safer Internet Day</em></div></div>
+    <div class="card bs rv"><i>2</i><div><b>Public accountability database</b><span>What vendors disclose is checked against what workers report: effective hourly pay versus the local living wage.</span><em>Verified by workers, not self-declared</em></div></div>
+    <div class="card bs rv"><i>3</i><div><b>Fair AI label</b><span>Turns verified data into a rating buyers understand at a glance. Thresholds tighten every two years.</span><em>Model: EU energy label</em></div></div>
+   </div>
+   <div class="label rv" data-d="6">
+    <div class="lhead"><b>FAIR AI</b><span>WHO MADE<br>THIS AI?</span></div>
+    <div class="lsub">AI system · supply-chain rating</div>
+    <div class="grades">
+     <div class="gr" style="--i:0;--w:40%;background:#00a651">A</div>
+     <div class="gr" style="--i:1;--w:47%;background:#4cb848">B</div>
+     <div class="gr" style="--i:2;--w:54%;background:#bfd730;color:#0c1a33">C</div>
+     <div class="gr" style="--i:3;--w:61%;background:#ffe600;color:#0c1a33">D</div>
+     <div class="gr" style="--i:4;--w:68%;background:#fdb913;color:#0c1a33">E</div>
+     <div class="gr" style="--i:5;--w:75%;background:#f37021">F</div>
+     <div class="gr" style="--i:6;--w:82%;background:#ed1c24">G</div>
+     <div class="ptr">B</div>
+    </div>
+    <div class="lrows">
+     <div class="lrow">Pay vs. local living wage<span>✓ verified</span></div>
+     <div class="lrow">Training and waiting time paid<span>✓ verified</span></div>
+     <div class="lrow">Safe conditions, mental health<span>✓ verified</span></div>
+     <div class="lrow">Subcontractors disclosed<span>✓ all tiers</span></div>
+    </div>
+    <div class="lfoot">Illustrative mock-up</div>
+   </div>
+  </div>
+ </div>
+ <div class="src">European Commission (2026); Regulation (EU) 2017/1369</div><div class="corner">09 · Instrument 1</div>
+</section>
+
+<!-- 11 · INSTRUMENT 2 -->
+<section class="slide scrim-f" data-name="Standard" data-cam="eu" data-map="eu" data-dim=".16">
+ <div class="pad">
+  <div class="kicker green rv">Instrument 2 · Standard</div>
+  <h2 class="h2 rv">Fair work as a condition of sale</h2>
+  <div class="pillars">
+   <div class="card pl rv"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="10.5"/><path d="M17.5 10.5c-.7-1.2-2-1.8-3.5-1.8-2 0-3.4 1-3.4 2.6 0 3.6 7 1.6 7 5.300 0 1.600-1.500 2.700-3.600 2.700-1.700 0-3.100-.700-3.800-2M14 6.500v15"/></svg><b>Fair wages</b><span>benchmarked against the local living wage</span></div>
+   <div class="card pl rv"><svg viewBox="0 0 28 28"><circle cx="14" cy="14" r="10.5"/><path d="M14 8v6.500l4.200 2.600"/></svg><b>Every hour paid</b><span>including mandatory training and required work</span></div>
+   <div class="card pl rv"><svg viewBox="0 0 28 28"><path d="M14 3.500l9 3.200v6.800c0 5.300-3.700 9.300-9 11-5.300-1.700-9-5.700-9-11V6.700z"/><path d="M10 14l3 3 5.500-6"/></svg><b>Safe conditions</b><span>including psychological well-being</span></div>
+  </div>
+  <p class="based rv">Built on the Data Labelers Association’s EU-funded Code of Conduct (2025).</p>
+  <div class="phases">
+   <div class="ph p1 rv"><small>Phase 1 · Years 2–3</small><b>Public procurement</b><span>The standard is a condition for every new public AI contract in the EU. Doubles as the pilot.</span></div>
+   <div class="gate rv">after independent<br>evaluation</div>
+   <div class="ph p2 rv"><small>Phase 2 · Year 5+</small><b>The whole EU market</b><span>Minimum requirements for all AI products and services sold in the EU, on the Ecodesign model.</span></div>
+  </div>
+ </div>
+ <div class="src">Data Labelers Association (2025); European Commission (n.d., Ecodesign requirements)</div><div class="corner">10 · Instrument 2</div>
+</section>
+
+<!-- 12 · COST -->
+<section class="slide scrim-f" data-name="Cost" data-cam="eu" data-map="eu" data-dim=".16" data-cut="5">
+ <div class="pad">
+  <div class="kicker rv">“Won’t this make European AI too expensive?”</div>
+  <div class="two" style="grid-template-columns:640px 1fr;gap:60px;align-items:start;margin-top:70px">
+   <div>
+    <p class="wagepre rv" style="margin-top:14px">Doubling workers’ pay raises the hourly contract price by only</p>
+    <div class="costn rv">+11–16<small>%</small></div>
+    <p class="megalab rv" style="font-size:21px;color:var(--muted)">assuming all other costs stay constant</p>
+   </div>
+   <div style="padding-top:34px">
+    <div class="costbars">
+     <div class="cb rv"><h5>Today <b>US$12.50 /h</b></h5><div class="cbar" style="--w:86.2%"><i class="w" style="width:16%">$2</i><i class="o">vendor, overheads, margin</i></div></div>
+     <div class="cb rv"><h5>Worker pay doubled <b>US$14.50 /h</b></h5><div class="cbar" style="--w:100%;--dl:1.5s"><i class="w2" style="width:27.6%">$4</i><i class="o">unchanged</i></div></div>
+    </div>
+    <div class="ctx">
+     <div class="chip rv"><b>≈ US$5 bn</b><span>OpenAI’s estimated compute spend in 2024. Labour is the small line.</span></div>
+     <div class="chip rv"><b class="green">Better data</b><span>Clear rules and higher pay improve annotation accuracy.</span></div>
+    </div>
+   </div>
+  </div>
+ </div>
+ <div class="src">Perrigo (2023); Epoch AI (2025); Laux et al. (2023) · bars show the upper case (US$2 → US$4); range US$1.32–2</div><div class="corner">11 · Cost</div>
+</section>
+
+<!-- 13 · ROADMAP -->
+<section class="slide scrim-f" data-name="Roadmap" data-cam="eu" data-map="eu" data-dim=".14" data-cut="5 3">
+ <div class="pad">
+  <div class="kicker rv">Implementation</div>
+  <h2 class="h2 rv">Pilot first, then scale</h2>
+  <div class="road">
+   <div class="card st" style="--n:0"><small>Year 1</small><b>Pilot</b><ul><li>DG EMPL taskforce with the AI Office, DLA as co-designer</li><li>Campaign launches</li><li>Database built on worker wage data</li></ul></div>
+   <div class="card st" style="--n:1"><small>Years 2–3</small><b>Rollout</b><ul><li>Common clauses in EU institutions’ AI tenders</li><li>Vendors disclose subcontractors and pay</li><li>Fair AI label starts as voluntary scheme</li></ul></div>
+   <div class="card st gatest" style="--n:2;--c:var(--gold)"><small>Year 4</small><b>Stage gate</b><ul><li>Independent evaluation</li><li>Wages, compliance costs, market effects, relocation of work</li></ul></div>
+   <div class="card st" style="--n:3;--c:var(--green)"><small>Year 5+</small><b>EU market</b><ul><li>Minimum requirements for all AI products</li><li>Commission proposal, approved by Parliament and Council</li></ul></div>
+  </div>
+  <div class="loop rv" data-d="26"><svg viewBox="0 0 28 28"><path d="M23.500 14a9.500 9.500 0 1 1-3-6.900"/><path d="M21 3v4.500h-4.500"/></svg><span><b>Self-correcting:</b> anonymous worker reports and annual audits update the ratings · label thresholds tighten every two years</span></div>
+ </div>
+ <div class="corner">12 · Roadmap</div>
+</section>
+
+<!-- 14 · SCENARIOS -->
+<section class="slide scrim-f" data-name="Scenarios" data-cam="eu" data-map="eu" data-dim=".14" data-cut="5">
+ <div class="pad">
+  <div class="kicker rv">Learning and adaptation</div>
+  <h2 class="h2 rv">Three scenarios, one stage gate</h2>
+  <div class="scen">
+   <div class="card evalc rv"><small>Year 4 · Stage gate</small><b>Independent evaluation</b><span>Did wages rise?<br>What did compliance cost?<br>Did work relocate?</span></div>
+   <svg viewBox="0 0 200 480"><path d="M0 240C110 240 90 68 200 68" stroke="#3ddc97" style="--t:1s"/><path d="M0 240H200" stroke="#ffcc33" style="--t:1.35s"/><path d="M0 240C110 240 90 412 200 412" stroke="#ff6b57" style="--t:1.7s"/></svg>
+   <div class="sc">
+    <div class="scard" style="--c:var(--green);--t:1.5s"><div><small>High cooperation</small><b>Reliable data, pay rises</b></div><i>→</i><p>Extend to the whole EU market</p></div>
+    <div class="scard" style="--c:var(--gold);--t:1.85s"><div><small>Mixed cooperation</small><b>Data gaps, high burden</b></div><i>→</i><p>Simplify reporting, extend the pilot, re-evaluate</p></div>
+    <div class="scard" style="--c:var(--coral);--t:2.2s"><div><small>Resistance</small><b>Refusal, false data, relocation</b></div><i>→</i><p>Name non-disclosers publicly, protect workers, redesign</p></div>
+   </div>
+  </div>
+ </div>
+ <div class="corner">13 · Scenarios</div>
+</section>
+
+<!-- 15 · STAKEHOLDERS -->
+<section class="slide scrim-f" data-name="Stakeholders" data-cam="eu" data-map="eu" data-dim=".14">
+ <div class="pad">
+  <div class="kicker rv">Political economy</div>
+  <h2 class="h2 rv">Who leads, who gains, who resists</h2>
+  <div class="stk">
+   <div class="col rv" style="--c:var(--blue)"><h3>Lead and implement</h3>
+    <div class="sk"><b>European Commission</b><span>DG EMPL taskforce</span></div>
+    <div class="sk"><b>European AI Office</b><span>alignment with the AI Act</span></div>
+    <div class="sk"><b>EU contracting authorities</b><span>apply the clauses</span></div></div>
+   <div class="col rv" style="--c:var(--green)"><h3>Co-design and verify</h3>
+    <div class="sk"><b>Data Labelers Association</b><span>standards, pay survey, campaign</span></div>
+    <div class="sk"><b>Unions and worker NGOs</b><span>anonymous reporting channel</span></div></div>
+   <div class="col rv" style="--c:var(--gold)"><h3>Likely to gain</h3>
+    <div class="sk"><b>Data workers</b><span>visibility, fair pay</span></div>
+    <div class="sk"><b>AI developers</b><span>verified data quality</span></div>
+    <div class="sk"><b>Fair vendors</b><span>reward for good practice</span></div></div>
+   <div class="col rv" style="--c:var(--coral)"><h3>Likely to resist</h3>
+    <div class="sk"><b>Opaque vendors</b><span>margins rely on opacity</span><em>→ non-disclosure made public</em></div>
+    <div class="sk"><b>Member States</b><span>wary of procurement burden</span><em>→ pilot in EU institutions first</em></div>
+    <div class="sk"><b>Kenyan government</b><span>courts outsourcing investment</span><em>→ demand-side rules avoid leakage</em></div></div>
+  </div>
+ </div>
+ <div class="src">Laux et al. (2023); Touvron et al. (2023)</div><div class="corner">14 · Stakeholders</div>
+</section>
+
+<!-- 16 · CLOSE -->
+<section class="slide closing" data-name="Close" data-cam="spread" data-map="spread" data-dim="1" data-cut="5 3">
+ <div class="close">
+  <div class="kicker green rv" style="justify-content:center">From Brussels to Nairobi, and beyond</div>
+  <h2 class="h2 rv">A standard that <span class="grad">travels.</span></h2>
+  <div class="outs">
+   <div class="out rv">Visible supply chains</div><div class="out rv">Higher hourly pay</div><div class="out rv">Not just in Kenya, but worldwide</div>
+  </div>
+ </div>
+ <div class="bye"><p class="rv" data-d="14">You see the AI. Europe can make sure you see who made it.</p><span class="rv" data-d="16">Lux Fulda · Vani Jupudi · Felix Schulte-Altedorneburg · Hertie School</span></div>
+</section>
+
+</div>
+<div id="bar"></div>
+<div id="timer">0:00</div>
+<div id="nav"><div id="dots"></div><span class="t" id="count"></span><button class="t" id="cut" title="Switch version (C)">ALL</button><button class="t" id="tbtn" title="Timer (T)">TIMER</button><button class="t" id="fs" title="Full screen (F)">FULL</button></div>
+
+<script>
+/* ---------- helpers ---------- */
+const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n)),mix=(a,b,t)=>a+(b-a)*t,sm=t=>{t=clamp(t);return t*t*(3-2*t)},ease=t=>{t=clamp(t);return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2},TAU=Math.PI*2;
+
+/* ---------- map data: hand-simplified outlines (lon,lat), rasterised into dots ---------- */
+const LAND=[
+[-168,65.5,-162,70,-156,71.3,-141,69.7,-128,70,-115,68.5,-108,68,-96,68.5,-94,72,-85,69.5,-81,68.5,-82,66,-87,64.5,-93,61.5,-94.5,58.7,-92.5,57,-85,55.3,-82,53,-80,51.3,-79,54.5,-77,57.5,-78,62.3,-73,62,-69.5,59,-65,60.3,-61.5,56.5,-56,52.5,-59,50.5,-66,50.2,-65,48.5,-64.5,47,-61,46,-61,45.3,-66,43.6,-70,43.7,-70,41.7,-74,40.5,-75.8,37.5,-76,35,-81,31.5,-80,26.5,-80.5,25.2,-82,26.5,-82.7,28.5,-84,30,-89,30.2,-94,29.5,-97.3,27.5,-97.7,22.5,-96,19,-94.5,18.3,-91,18.8,-90.4,21,-87,21.5,-87.6,18.3,-88.8,15.9,-83.5,15.3,-83.5,11,-82,9,-79.5,9.6,-77.3,8.7,-77.9,7.2,-80.5,7.3,-83,8.3,-85.7,10,-87.5,13,-91.5,14,-94.5,16.2,-97,15.8,-102,18,-105.5,20.2,-106,23.2,-109.4,26.5,-112.5,29.5,-114.7,31.6,-114.5,30,-112.5,27,-110,23.2,-112,24.8,-115,28.5,-117,32.5,-120.6,34.6,-122.5,37.7,-124.3,40.4,-124,46.5,-123,48.3,-125,50,-128,52.5,-130.5,54.8,-134,58,-138,59.5,-145,60.3,-151.5,59.3,-154,57.5,-158,56.5,-163,54.8,-158,58.6,-162,59.8,-165.5,61.5,-164.5,63.2,-161,64.5,-166.5,64.6],
+[-73,78.2,-60,82,-33,83.5,-20,81,-18,76,-22,70.5,-32,68.2,-41,65,-43.5,60,-48.5,61,-52,64.5,-54,69,-58,75.5,-68,76.2],
+[-80,73.7,-72,71.5,-62,66.5,-65,62,-73,64.5,-78,66,-73,68,-85,70,-89,73],[-117,71.5,-108,73,-102,71,-105,69,-115,69.3],[-92,81,-62,82.5,-70,79,-80,76.3,-90,76.5],
+[-59.3,47.7,-55.5,51.5,-52.7,47.5,-56,46.8],[-85,22,-80,23.2,-74.2,20.2,-77.7,19.9,-82,21.5],[-74.4,18.4,-72.8,19.9,-68.4,18.6,-71,17.7],
+[-77.3,8.7,-75.3,10.8,-71.5,12.4,-70,11.5,-68,10.5,-64,10.6,-61.8,10.7,-60,8.5,-57,6,-52,4.8,-50,1.5,-50,-.2,-44.5,-2.5,-40,-2.9,-37,-4.8,-35,-6.5,-35,-9,-38.7,-13,-39,-17.5,-41,-22,-44.5,-23.2,-48.5,-26,-48.7,-28.5,-52,-32.5,-54,-34.7,-57,-34.5,-58.4,-34,-57,-36.3,-57.6,-38.2,-62,-39,-65,-41,-63.7,-42.8,-65.5,-45,-67.5,-46.3,-66,-48,-69,-51,-68.4,-52.4,-65.2,-54.8,-67,-55.3,-71,-54,-74.5,-52,-75.5,-47,-73.5,-42,-73.6,-37.5,-71.5,-33,-71.4,-28.5,-70.3,-23.5,-70.3,-18.3,-75.5,-14.5,-77.2,-12,-79.5,-7.5,-81.3,-5.5,-80,-2.5,-80.9,-1,-80,.8,-78.8,1.5,-77.5,4.2,-77.4,7],
+[-5.9,35.8,-2,35.1,3,36.9,10,37.3,11,35,10.2,33.8,15.3,32.3,19.5,30.3,20,32.6,25,31.7,31,31.5,32.3,31.2,32.5,29.9,34.2,27,35.6,24,37.2,21,37.4,18.7,39.5,15.5,42.8,12.8,43.3,11.5,44.5,10.4,51.2,11.9,50.8,9.5,48,4.5,44.5,1.5,41.6,-1.7,40.2,-2.8,39.2,-4.7,38.8,-6.5,39.5,-8,40.5,-10.5,40.6,-15,36.9,-17.9,34.8,-19.9,35.5,-23.5,32.9,-25.9,32.9,-28,30.9,-30,28,-33,25.7,-34,20,-34.8,18.4,-34.3,18.2,-32,15.2,-27,14.5,-22.5,11.8,-17.5,13.7,-11.5,12.2,-6,11.8,-4.5,9,-.7,9.5,1.2,9.7,3.8,8.5,4.5,6,4.3,4.5,6.3,1,5.9,-2,4.9,-4.5,5.2,-7.5,4.4,-9.3,5.5,-11.5,6.9,-13.3,8.6,-15,10.9,-16.8,12.5,-17.5,14.7,-16.5,16.3,-16.2,19,-17,21,-14.9,24.5,-13.2,27.7,-10,29.7,-9.7,31.5,-6.8,34],
+[49.3,-12.2,50.4,-15.5,47.8,-24.5,45,-25.4,43.5,-22.5,44.3,-17.5,47.5,-15],
+[-9,37,-9.4,38.8,-8.8,41.8,-9.2,43.1,-8,43.7,-3.8,43.5,-1.8,43.4,-1.2,45.8,-2.2,47.2,-4.7,48.2,-3,48.8,-1.6,48.7,-1.8,49.7,-1.2,49.4,.2,49.6,1.6,50.7,3.5,51.4,4.7,53,6.9,53.4,8.6,53.9,8.2,55.5,8.1,57.1,10.6,57.7,10.5,56.4,9.8,55,10.9,54,11.9,54.2,14.2,53.9,18.5,54.8,19.8,54.4,21,55.3,21,57,22.6,57.7,24.3,57.2,24.4,58.4,23.4,59.2,28,59.5,30.2,60,28.7,60.6,25,60.2,22.9,59.9,21.3,60.8,21.5,63,25.3,65.2,24.2,65.8,22.2,65.6,21.5,64.3,17.9,62.5,17.2,60.7,18.9,60,18,58.8,16.5,57,16,56.2,14.3,55.5,12.9,55.4,12.7,56.2,11.2,58.9,10.5,59.5,8,58.1,5.5,58.8,5,61,6,62.6,8.5,63.6,11.5,64.9,13,66.5,14.5,68.2,18,69.6,22,70.5,25.7,71.1,28.5,70.9,31,70.3,30,69.6,33,69.4,41,67.7,41,66.3,38,66.1,33.5,66.7,34.8,64.5,37.5,63.8,40,64.6,40.5,65.8,44,66.2,43.5,68.5,46,68.2,54,68.3,60,68.8,67,69,69,73,80,73.5,87,75.3,98,76.3,104.3,77.7,113,76,113.5,73.8,127,73.5,130,71,140,72.5,150,71.5,160,69.7,170,70,180,68.8,180,65,177.5,62.5,170.5,60,163.5,59.9,162,58,163,56,162,54.8,156.7,51,155.7,56.7,160.5,61.8,156.5,61.5,151.5,59.2,143,59.3,135.2,54.8,140.5,54,141.3,52.2,140.5,48.5,135.5,44,131.5,43,129.8,41.5,127.5,39.8,129.4,37,129.3,35.3,126.5,34.4,126.5,37.5,125,38,124.3,39.9,122.2,40.4,121.3,38.9,118,39.2,119,37.3,122.5,37.2,120,35.8,119.4,34.8,121.8,31.3,121.9,29.8,120,26.5,117,23.6,114,22.3,110.3,21.3,109.5,21.6,106.8,20.7,105.8,18.8,108.9,15.3,109.3,12,107,10.5,105,8.7,105,10.2,103.5,10.6,102.5,12.2,100.9,13.4,99.9,11.5,99.3,9.2,100.5,7.2,102.1,6.2,103.4,4.5,104.2,1.4,103.4,1.4,101.3,2.8,100.3,5.8,98.3,8,98.5,10.5,97.7,14.5,97.6,16.5,95.5,15.9,94.3,16.2,94.2,18.8,92.3,20.8,91.8,22.5,90.4,22.2,88.8,21.7,87,21.3,86.4,20,85,19.4,82.3,16.6,80.2,15.5,80.2,13.3,79.8,10.3,79,9.2,77.6,8.1,76.5,9,75.2,12,74,15,72.8,19.2,72.7,21.2,70.9,20.8,69,22.3,68.8,23.2,67.4,24.5,66.5,25.4,61.6,25.2,57.5,25.7,56.6,27.1,54.5,26.6,51.5,27.8,50.2,30,48.9,30.2,48,29.6,48.5,28.4,50.2,26.5,50.8,24.8,51.6,24.2,54,24.2,56.2,26.2,56.5,24.4,59.8,22.5,58.5,20.4,57.8,18.9,55,17,52.2,15.6,48.7,14,45,12.8,43.5,12.7,42.7,16.5,40.8,19.8,39.2,21.5,37.2,24.5,35,28.1,34.9,29.5,34.2,27.8,32.6,29.9,32.3,31.2,34.3,31.3,35,32.8,35.9,35.2,36.2,36.6,34.6,36.8,32.5,36.1,30.6,36.8,29.3,36.2,27.4,37,26.3,38.3,26.8,39.5,26.2,40,29,41,31.5,41.2,35,42,38,41,41.5,41.5,41.5,42.8,39.5,43.6,37,45,38.3,46.2,39.3,47.1,35.2,46.2,35,45.4,36.5,45.2,35.5,44.6,33.5,44.4,32.6,45.4,33.5,46.1,31.5,46.6,30.2,45.8,29.7,45.2,28.7,44,28,42.5,28.2,41.5,28.9,41.05,27.5,40.9,26.3,40.3,26,40.8,24,40.8,23.9,39.9,22.8,40.4,22.8,39.2,24,38,23.2,37.3,23.1,36.5,22.4,36.5,21.7,36.8,21.2,38.2,20.1,39.6,19.4,40.4,19.5,41.8,18.5,42.5,16,43.5,15,44.7,14.3,45.3,13.6,45.6,12.3,45.3,12.5,44.2,13.6,43.5,14.3,42.3,16,41.9,18.5,40.2,18.2,39.9,17,40.5,16.6,39.7,17.1,39,16.5,38.4,15.7,37.95,16,38.8,15.6,40,14.4,40.7,12.3,41.7,11,42.5,10.3,43.5,8.8,44.4,7.5,43.8,6,43.1,4.5,43.4,3.1,43.1,3.2,41.9,.8,40.9,-.3,39.4,.2,38.7,-.6,37.7,-2,36.8,-4.5,36.7,-5.6,36,-6.3,36.6,-7.4,37.2],
+[-5.7,50.1,-3,50.7,1.4,51.2,1.7,52.7,.3,53,-.2,54.2,-1.6,55.6,-3.2,56,-1.8,57.6,-4,57.7,-3.1,58.6,-5,58.6,-6.2,57,-5.5,55.4,-4.8,54.8,-3.2,54.9,-3,53.5,-4.5,53.3,-4.3,52.3,-5.2,51.8,-3.2,51.4,-4.5,51.1],
+[-10,51.6,-6.2,52.2,-6,53.5,-5.5,54.5,-6.2,55.2,-8.2,55.2,-10,54.2,-9.5,53],[-24,65.5,-22,66.4,-16,66.5,-13.6,65,-18.5,63.4,-22.5,63.9],
+[12.4,38,15.6,38.3,15.1,36.7,12.5,37.6],[8.2,41.2,9.7,41,9.6,39.1,8.4,39],[8.6,42.9,9.5,43,9.4,41.4,8.7,41.6],[23.5,35.6,26.3,35.3,26.2,34.95,23.5,35.2],[32.3,35.1,34.5,35.6,33.9,34.9,32.5,34.7],
+[51.5,71,56.5,71,68,76.5,60,76,54,73.5],
+[129.8,33.2,130.5,31.2,131.8,32.8,132.5,34.3,135.2,33.5,136.9,34.5,139,35,140.9,35.7,141.9,39.5,141.3,41.4,140,40.6,139.5,38,136.8,37.2,136,35.7,132.5,35.5,131,34.4],[140,41.6,141.5,45.4,145.3,43.5,143,42,141,42.5],[142,46,143.5,49.5,142.5,54.3,142,50],
+[120.2,23,121.5,25.2,121.9,24.5,120.9,22],[108.7,19.3,110.8,20,110.5,18.3,109,18.3],[79.8,8.5,80.2,9.8,81.8,7.5,81,6.2,80,6.1],
+[119.9,16.3,120.6,18.5,122.2,18.5,122.2,16.2,121.6,14.9,123.9,13.8,124.1,12.6,122.7,13.2,121,13.7,120.6,14.5],[122,11.8,125.3,12.5,125.7,11,124.9,10,123.2,9.1,122.4,10.5],[122,7,123.5,8.6,125.5,9.7,126.5,7.5,125.6,5.7,124,6.5],[117.2,8.4,119.5,11.3,119.7,10.5,117.8,8.5],
+[109.2,1.8,113,3.3,115.5,5.5,117,7,119,5.2,117.8,3.5,118.8,1,117.5,-.8,116.2,-3.8,114.5,-3.5,111.5,-3.2,110,-1.5,109,.3],[95.3,5.6,97.8,5.2,100.5,2.2,103.6,-1,106,-3,105.8,-5.8,104.3,-5.6,102,-3.8,100.3,-.8,98.5,1.8],[105.2,-6.7,108.6,-6.5,110.8,-6.4,114.5,-7.6,114.4,-8.6,108,-7.8,105.5,-7],
+[119.5,-5.5,120.5,-2.8,119.8,.8,121,1.3,125,1.6,123,.4,121,.4,121.5,-1,123.3,-.9,121.7,-2,122.8,-4.8,121.5,-4.6,120.6,-5.6],
+[131,-.8,134,-.8,135,-3.3,138,-1.6,141,-2.6,145,-4.3,147.8,-6,150.5,-10.5,147.5,-10,144.5,-7.7,142.5,-9.2,138.5,-8.2,137.7,-5.2,134,-3.9,132.8,-3,131.2,-1.3],
+[114,-22,113.5,-26,115.7,-31.5,115,-34.3,118,-35,123.5,-33.9,129,-31.6,131.5,-31.5,134.5,-33,135.8,-34.8,137.8,-32.6,138,-35.6,140.5,-38,143.5,-38.8,146.3,-39,149.9,-37.5,151.3,-33.8,153.5,-28.2,153,-25.5,149.5,-22.3,146.2,-19,145.4,-15,143.5,-14.2,142.5,-10.7,141.6,-13,140.9,-17.5,139,-17.5,135.5,-15,136.8,-12.2,132.5,-11.5,130.5,-12.5,129.5,-15,127,-14,125,-15.5,122.2,-17.2,121.5,-19.5,117,-20.7],
+[144.7,-40.8,148.3,-40.9,148,-43.3,146,-43.6,145.3,-42.3],[172.7,-34.5,175.5,-36.5,178.5,-37.7,177,-39.5,175.3,-41.6,174.7,-39.3,173.8,-39.2],[172.7,-40.5,174.3,-41.8,173,-43.2,170.5,-46,168.3,-46.6,166.5,-45.8,168.5,-44,171,-42.3]
+];
+const LAKES=[[47,45,51,47,53,46.5,53,42,54,37,50,37,49,41,47.3,43.2],[31.8,-.6,32.8,.3,34,.3,34.1,-.3,34,-1.5,33.4,-2.6,32,-2.6,31.7,-1.5]];
+const KENYA=[34,4.2,35.9,4.6,36.1,4.45,38.1,3.6,39.5,3.4,40.8,4.2,41.9,3.95,41,2.8,41,-.85,41.56,-1.67,40.9,-2.3,40.2,-2.9,39.67,-4.05,39.2,-4.68,37.75,-3.55,37.6,-3,34.05,-1.05,33.9,.1,34.5,1.1,35,1.7,34.45,3.2];
+const VEN=[-60,8.6,-61.3,6,-60.7,5.2,-62.7,3.7,-64.6,4.1,-63.5,2.2,-65.5,.7,-67.1,1.2,-67.4,2.2,-67.8,4.3,-67.5,6.2,-70,7,-72,7.1,-72.5,8.4,-73.3,9.2,-72.5,11.2,-71.3,12.6,-68,11.2,-64,11.2,-61.5,11];
+const IND=[68.2,23.6,71,24.5,69.7,27,73,29.8,74.5,32.7,74,34.6,77.8,35.4,79,32.5,81,30.2,80.2,28.8,84,27.4,88.1,26.4,88.2,27.9,89,26.9,92,26.9,92.2,27.8,97,28.3,97.1,27.1,95.2,26,94.5,24.6,93.3,24,93.2,22.2,92.3,23.2,91.3,23.2,92.2,25,89.9,25.3,89.8,26,88.3,25.9,88.2,25,88.9,23.2,89,21.5,87,20.6,86.5,19.6,84.5,18.3,82.5,16.1,80.6,15.2,80.6,13.2,80.1,10,79.3,8.8,77.6,7.7,76.2,9,74.6,12.5,73.1,16.5,72.4,19.2,72.3,21.3,70.6,20.4,68.6,22.3];
+const EU_MAIN=[-10,36,-5.6,36,-2,36.2,3,38,9,38.3,11.5,37.45,12.5,36.3,15,35.5,23.4,34.6,26.5,34.7,28.6,36,27.2,37.2,26.7,39,26,40,26.1,40.7,26.6,41.3,26.4,41.75,28,42,29,43.5,29.9,45.2,28.2,45.5,28.1,46.9,26.6,48.25,24.9,47.75,22.9,48,22.2,48.4,22.6,49.1,24.1,50.8,23.6,51.6,23.9,52.7,23.6,53.9,25.7,54.3,26.7,55.5,28.2,56.2,27.5,57.5,28.1,59.5,27.8,60.5,29.5,61.4,31.5,62.9,30.5,64.1,29.7,64.8,30.1,65.7,29.2,66.8,30,67.7,28.5,68.3,28.9,69.05,29.2,69.6,28,70.05,26.5,69.9,25.8,69,24.9,68.6,23.7,68.75,22,68.9,20.5,69.05,18.2,68.5,16.5,68,14.5,66.1,13.5,64.3,12.2,63,12.6,61.5,12.2,60.2,11.4,59,10.5,58.3,7.5,57.6,7.5,55.5,4,53.9,2.6,51.6,1.6,51.05,-2,49.95,-5.5,48.9,-10,48];
+const EU_IE=[-10.7,51.3,-6,51.9,-6,54,-7.3,54.1,-8.2,54.5,-7.2,55.4,-10.5,54.5],EU_CY=[32.2,34.5,34.7,34.5,34.7,35.8,32.2,35.8];
+const EU_EX=[[15.8,45.2,19.1,44.9,18.9,45.9,20.3,46.1,21.4,44.8,22.7,44.2,22.4,42.3,22.9,41.3,21,40.85,20.2,39.7,19.2,40.3,19.3,41.9,18.4,42.5,17.5,43.2,16.2,44.2],[6.1,46.2,7,45.9,9,46,10.4,46.6,9.6,47.5,8.5,47.7,7,47.4],[19.8,54.45,22.8,54.4,22.6,55.1,21,55.3,20,55]];
+function pip(p,x,y){let c=false;for(let i=0,j=p.length-2;i<p.length;j=i,i+=2){const xi=p[i],yi=p[i+1],xj=p[j],yj=p[j+1];if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c}return c}
+const any=(a,x,y)=>a.some(p=>pip(p,x,y));
+function tagOf(x,y){ // -1 sea · 0 land · 1 Kenya · 2 Venezuela · 3 India · 4 Philippines · 5 EU
+ if(pip(KENYA,x,y))return 1;
+ if(!any(LAND,x,y)||any(LAKES,x,y))return -1;
+ if(pip(VEN,x,y))return 2;if(pip(IND,x,y))return 3;
+ if(x>116&&x<127.5&&y>4.5&&y<19.5)return 4;
+ if((pip(EU_MAIN,x,y)||pip(EU_IE,x,y)||pip(EU_CY,x,y))&&!any(EU_EX,x,y))return 5;
+ return 0}
+const BOX1={x0:-12,x1:45,y0:34,y1:72},BOX2={x0:26,x1:52,y0:-12,y1:14};
+const inB=(b,x,y)=>x>=b.x0&&x<=b.x1&&y>=b.y0&&y<=b.y1;
+function layer(x0,x1,dx,y0,y1,dy,zone){const b={};for(let y=y0;y<=y1+1e-6;y+=dy)for(let x=x0;x<=x1+1e-6;x+=dx){const t=tagOf(x,y);if(t<0)continue;const z=zone?(inB(BOX1,x,y)?1:inB(BOX2,x,y)?2:0):0,k=t+'_'+z;(b[k]||(b[k]={t,z,p:[]})).p.push(x,y)}return Object.values(b)}
+const LA=layer(-178.8,180,2.4,-55,77,2,true),LB=layer(BOX1.x0,BOX1.x1,1.5,BOX1.y0,BOX1.y1,1),LC=layer(BOX2.x0,BOX2.x1,.5,BOX2.y0,BOX2.y1,.5);
+const NAIROBI=[36.82,-1.29],BRUSSELS=[4.35,50.85];
+const HUBS=[{n:'KENYA',p:[37.9,.6]},{n:'VENEZUELA',p:[-66,7.5]},{n:'INDIA',p:[79,22]},{n:'PHILIPPINES',p:[122,12.5]}];
+
+/* ---------- camera ---------- */
+const POSES={
+ world:{lon:12,lat:18,s:5.5,kx:.82,fx:800,fy:450},
+ hubs:{lon:12,lat:18,s:5.5,kx:.82,fx:800,fy:520},
+ kenya:{lon:37.9,lat:.2,s:52,kx:1,fx:1170,fy:450},
+ link:{lon:21,lat:25,s:11.5,kx:.86,fx:1180,fy:455},
+ eu:{lon:11,lat:53,s:18.5,kx:.62,fx:1170,fy:440},
+ spread:{lon:12,lat:18,s:5.5,kx:.82,fx:800,fy:590}
+};
+const cv=document.getElementById('map'),ctx=cv.getContext('2d'),stage=document.getElementById('stage');
+let W,H,K,OX,OY,DPR,cam={...POSES.world},fly=null;
+function resize(){DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;K=Math.min(W/1600,H/900);OX=(W-1600*K)/2;OY=(H-900*K)/2;stage.style.transform=`translate(${OX}px,${OY}px) scale(${K})`}
+addEventListener('resize',resize);resize();
+function flyTo(name){const to=POSES[name]||POSES.world,from={...cam};
+ const same=['lon','lat','s','kx','fx','fy'].every(k=>Math.abs(from[k]-to[k])<1e-3);if(same){fly=null;return 0}
+ const far=Math.hypot(from.lon-to.lon,from.lat-to.lat),zoomed=Math.min(from.s,to.s)>14;
+ const dur=clamp(900+Math.abs(Math.log(to.s/from.s))*520+far*9,1000,2300);
+ fly={from,to,t0:performance.now(),dur,bump:zoomed&&far>25?.45:0};return dur}
+const MODES=['hubs','kenya','link','eu','spread'],mw={},mt={},since={};MODES.forEach(m=>{mw[m]=0;mt[m]=0;since[m]=0});
+function setMode(m){MODES.forEach(k=>{const v=k===m?1:0;if(v&&!mt[k])since[k]=performance.now();mt[k]=v})}
+
+/* ---------- drawing ---------- */
+const CORAL='255,107,87',GOLD='255,204,51',GREEN='61,220,151';
+let S,FX,FY,last=performance.now(),now=last;
+const PX=(lon,lat)=>[FX+(lon-cam.lon)*S*cam.kx,FY-(lat-cam.lat)*S];
+function dots(p,r){ctx.beginPath();const kx=S*cam.kx;for(let i=0;i<p.length;i+=2){const x=FX+(p[i]-cam.lon)*kx,y=FY-(p[i+1]-cam.lat)*S;if(x<-9||y<-9||x>W+9||y>H+9)continue;ctx.moveTo(x+r,y);ctx.arc(x,y,r,0,TAU)}ctx.fill()}
+function hl(t){ // highlight colour + weight per tag
+ const hot=t===1?Math.max(mw.hubs,mw.kenya,mw.link):t>=2&&t<=4?mw.hubs:0,fair=t>=1&&t<=4?mw.spread:0,eu=t===5?Math.max(mw.eu,mw.spread,mw.link*.75):0;
+ if(eu>.01)return[GOLD,eu];if(fair>hot)return[GREEN,fair];return[CORAL,hot]}
+function drawLayer(L,step,af){const r=clamp(step*S*.21,1.1*K,5*K);for(const b of L){const a=af(b.z);if(a<=.01)continue;const[c,w]=hl(b.t);
+ ctx.globalAlpha=a*.42*(1-w);ctx.fillStyle='rgb(128,176,236)';dots(b.p,r);
+ if(w>.01){ctx.globalAlpha=a*w;ctx.fillStyle=`rgb(${c})`;dots(b.p,r*1.1)}}}
+function rings(x,y,c,a,max,n=2,speed=2600){ctx.lineWidth=1.6*K;ctx.strokeStyle=`rgb(${c})`;for(let i=0;i<n;i++){const p=((now/speed)+i/n)%1;ctx.globalAlpha=a*(1-p)*.75;ctx.beginPath();ctx.arc(x,y,p*max,0,TAU);ctx.stroke()}}
+function pin(x,y,c,a){ctx.globalAlpha=a;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x,y,3.6*K,0,TAU);ctx.fill();ctx.strokeStyle=`rgb(${c})`;ctx.lineWidth=2*K;ctx.beginPath();ctx.arc(x,y,8*K,0,TAU);ctx.stroke()}
+function label(x,y,t,c,a,size=13,align='left'){ctx.globalAlpha=a;ctx.font=`700 ${size*K}px "JetBrains Mono",ui-monospace,Menlo,monospace`;if('letterSpacing'in ctx)ctx.letterSpacing=(size*.16*K)+'px';ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillStyle='rgba(4,11,28,.85)';const w=ctx.measureText(t).width,pad=6*K,x0=align==='left'?x-pad:align==='center'?x-w/2-pad:x-w-pad;ctx.fillRect(x0,y-size*K*.85,w+pad*2,size*K*1.7);ctx.fillStyle=`rgb(${c})`;ctx.fillText(t,x,y)}
+function arc(A,B,c,a,prog,bend=.24,width=2){const mx=(A[0]+B[0])/2,my=(A[1]+B[1])/2;let nx=-(B[1]-A[1]),ny=B[0]-A[0];if(ny>0){nx=-nx;ny=-ny}const cx=mx+nx*bend,cy=my+ny*bend,pt=t=>[(1-t)*(1-t)*A[0]+2*(1-t)*t*cx+t*t*B[0],(1-t)*(1-t)*A[1]+2*(1-t)*t*cy+t*t*B[1]];
+ ctx.globalAlpha=a*.85;ctx.strokeStyle=`rgb(${c})`;ctx.lineWidth=width*K;ctx.setLineDash([7*K,6*K]);ctx.lineDashOffset=-now/45;ctx.beginPath();const n=48,m=Math.floor(n*clamp(prog));for(let i=0;i<=m;i++){const q=pt(i/n);i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])}ctx.stroke();ctx.setLineDash([]);
+ if(prog>=1){const q=pt((now/2200)%1);ctx.globalAlpha=a;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(q[0],q[1],3.2*K,0,TAU);ctx.fill()}return pt}
+function outline(p,c,a){ctx.globalAlpha=a;ctx.strokeStyle=`rgb(${c})`;ctx.lineWidth=2*K;ctx.lineJoin='round';ctx.shadowColor=`rgb(${c})`;ctx.shadowBlur=18*K;ctx.beginPath();for(let i=0;i<p.length;i+=2){const q=PX(p[i],p[i+1]);i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])}ctx.closePath();ctx.stroke();ctx.shadowBlur=0}
+function frame(t){now=t;const dt=Math.min(64,t-last);last=t;
+ if(fly){const u=clamp((t-fly.t0)/fly.dur),e=ease(u),f=fly.from,g=fly.to;cam.lon=mix(f.lon,g.lon,e);cam.lat=mix(f.lat,g.lat,e);cam.kx=mix(f.kx,g.kx,e);cam.fx=mix(f.fx,g.fx,e);cam.fy=mix(f.fy,g.fy,e);cam.s=Math.exp(mix(Math.log(f.s),Math.log(g.s),e))*(1-fly.bump*Math.sin(Math.PI*e));if(u>=1)fly=null}
+ const kf=1-Math.exp(-dt/380);MODES.forEach(m=>mw[m]+=(mt[m]-mw[m])*kf);
+ S=cam.s*K;FX=OX+cam.fx*K;FY=OY+cam.fy*K;
+ ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0,0,W,H);
+ const a1=sm((S-7.5)/4),a2=sm((.5*S-7.5)/4);
+ drawLayer(LA,2,z=>z===1?1-a1:z===2?1-a2:1);if(a1>.01)drawLayer(LB,1,()=>a1);if(a2>.01)drawLayer(LC,.5,()=>a2);
+ const nb=PX(...NAIROBI),br=PX(...BRUSSELS);
+ if(mw.hubs>.01)HUBS.forEach((h,i)=>{const q=PX(...h.p);rings(q[0],q[1],CORAL,mw.hubs,46*K,2,2400+i*150);label(q[0]+22*K,q[1]-20*K,h.n,CORAL,mw.hubs)});
+ const kOut=Math.max(mw.kenya,mw.link*.9);
+ if(kOut>.01){outline(KENYA,CORAL,kOut);pin(nb[0],nb[1],CORAL,kOut);rings(nb[0],nb[1],CORAL,kOut,34*K)}
+ if(mw.kenya>.01){label(nb[0]+18*K,nb[1]+2*K,'NAIROBI',CORAL,mw.kenya);const top=PX(37.9,5.6);label(top[0],top[1],'KENYA',CORAL,mw.kenya*.9,17,'center')}
+ if(mw.link>.01){const pr=clamp((t-since.link-900)/1700);arc(nb,br,GOLD,mw.link,pr,.2,2.4);label(nb[0]+18*K,nb[1]+2*K,'NAIROBI',CORAL,mw.link);if(pr>.9){pin(br[0],br[1],GOLD,mw.link);label(br[0]+18*K,br[1]-2*K,'BRUSSELS',GOLD,mw.link)}}
+ if(mw.eu>.01){pin(br[0],br[1],GOLD,mw.eu);rings(br[0],br[1],GOLD,mw.eu,150*K,3,3600);label(br[0]+18*K,br[1]-2*K,'BRUSSELS',GOLD,mw.eu)}
+ if(mw.spread>.01){rings(br[0],br[1],GOLD,mw.spread,640*K,4,5200);pin(br[0],br[1],GOLD,mw.spread);HUBS.forEach((h,i)=>{const q=PX(...h.p),pr=clamp((t-since.spread-700-i*320)/1500);arc(br,q,GOLD,mw.spread,pr,.22,1.8);if(pr>=1){rings(q[0],q[1],GREEN,mw.spread,34*K);label(q[0]+16*K,q[1]+20*K,h.n,GREEN,mw.spread,12)}})}
+ ctx.globalAlpha=1;requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+
+/* ---------- deck ---------- */
+const slides=[...document.querySelectorAll('.slide')],dotsEl=document.getElementById('dots'),countEl=document.getElementById('count'),bar=document.getElementById('bar');
+let cur=-1,cut='all',timerOn=false,t0=0,pending=0;
+document.querySelectorAll('.ppl').forEach(g=>{const n=+g.dataset.n,on=+g.dataset.on;for(let i=0;i<n;i++){const d=document.createElement('i');if(i<on){d.className='on';d.style.setProperty('--i',i)}g.append(d)}});
+slides.forEach((s,i)=>{let d=0;s.querySelectorAll('.rv').forEach(el=>{if(el.dataset.d!=null)d=+el.dataset.d;el.style.setProperty('--d',d);d+=1.6});
+ const b=document.createElement('button');b.title=`${i+1} · ${s.dataset.name}`;b.setAttribute('aria-label',b.title);b.onclick=e=>{e.stopPropagation();go(i)};dotsEl.append(b)});
+const inCut=i=>cut==='all'||(slides[i].dataset.cut||'').split(' ').includes(cut);
+const active=()=>slides.map((_,i)=>i).filter(inCut);
+function countUp(s){s.querySelectorAll('[data-count]').forEach((el,i)=>{const end=+el.dataset.count,start=+(el.dataset.from||0),dec=+(el.dataset.dec||0),dur=+(el.dataset.dur||1400),delay=+(el.dataset.delay||350+i*200),tok=el._tok=Symbol(),fmt=v=>v.toFixed(dec);el.textContent=fmt(start);const b=performance.now()+delay;(function step(n){if(el._tok!==tok)return;const p=clamp((n-b)/dur);el.textContent=fmt(start+(end-start)*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(step)})(performance.now())})}
+function play(s){s.classList.remove('play');void s.offsetWidth;s.classList.add('play');countUp(s)}
+function sync(){const a=active();[...dotsEl.children].forEach((d,i)=>{d.classList.toggle('on',i===cur);d.classList.toggle('off',!inCut(i))});const pos=a.indexOf(cur);countEl.textContent=`${pos<0?'–':pos+1} / ${a.length}`;bar.style.width=(pos<0?0:(pos+1)/a.length*100)+'%'}
+function go(n,instant){if(n<0||n>=slides.length||n===cur)return;const old=slides[cur],nx=slides[n];cur=n;
+ slides.forEach(s=>{if(s!==nx)s.classList.remove('active','play')});
+ const dur=flyTo(nx.dataset.cam);setMode(nx.dataset.map||'');cv.style.opacity=nx.dataset.dim||.5;
+ clearTimeout(pending);const show=()=>{nx.classList.add('active');play(nx)};
+ history.replaceState(null,'','#'+(n+1));if(instant||!old)show();else pending=setTimeout(show,dur?Math.min(dur*.62,1250):260);sync()}
+function step(d){const a=active();let pos=a.indexOf(cur);if(pos<0){pos=a.findIndex(i=>i>cur);if(pos<0)pos=a.length-1;return go(a[pos])}const n=a[pos+d];if(n!=null)go(n)}
+const CUTS=['all','5','3'],cutBtn=document.getElementById('cut');
+function nextCut(){cut=CUTS[(CUTS.indexOf(cut)+1)%3];cutBtn.textContent=cut==='all'?'ALL':cut+' MIN';if(!inCut(cur))step(0);sync()}
+cutBtn.onclick=e=>{e.stopPropagation();nextCut()};
+const timer=document.getElementById('timer');
+function toggleTimer(){timerOn=!timerOn;timer.style.display=timerOn?'block':'none';t0=performance.now()}
+setInterval(()=>{if(!timerOn)return;const s=Math.floor((performance.now()-t0)/1000),lim=cut==='3'?180:300;timer.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');timer.classList.toggle('over',s>lim)},250);
+document.getElementById('tbtn').onclick=e=>{e.stopPropagation();toggleTimer()};
+const fsT=()=>{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})};
+document.getElementById('fs').onclick=e=>{e.stopPropagation();fsT()};
+document.addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;const k=e.key;
+ if(k==='ArrowRight'||k==='ArrowDown'||k==='PageDown'||k===' '||k==='Enter'){e.preventDefault();if(!e.repeat)step(e.shiftKey?-1:1)}
+ else if(k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp'||k==='Backspace'){e.preventDefault();if(!e.repeat)step(-1)}
+ else if(k==='Home')go(active()[0]);else if(k==='End')go(active().slice(-1)[0]);
+ else if(k==='f'||k==='F')fsT();else if(k==='c'||k==='C')nextCut();else if(k==='t'||k==='T')toggleTimer();else if(k==='r'||k==='R')play(slides[cur])});
+document.addEventListener('click',e=>{if(e.target.closest('#nav,a,button'))return;step(e.clientX<innerWidth*.25?-1:1)});
+let navT;addEventListener('mousemove',()=>{document.body.classList.add('nav-on');clearTimeout(navT);navT=setTimeout(()=>document.body.classList.remove('nav-on'),2200)});
+const start=Math.max(0,Math.min(slides.length-1,(parseInt(location.hash.slice(1))||1)-1));
+cam={...(POSES[slides[start].dataset.cam]||POSES.world)};go(start,true);
+addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1));if(n)go(n-1)});
+</script>
+</body>
+</html>

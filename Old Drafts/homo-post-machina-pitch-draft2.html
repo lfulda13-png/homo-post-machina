@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Homo post Machina · GPPN 2027 Pitch · Draft 2</title>
+<!--
+  DRAFT 2 · 9 slides, several of them with steps (one click = one step).
+  HOW TO EDIT
+  · Slides are the <section class="slide"> blocks, in order.
+  · data-steps="2" = the slide has two extra clicks. Elements with data-s="1" show only on step 1,
+    data-s="1+" from step 1 on, data-s="0" only before the first click.
+  · data-cam / data-map / data-dim = map camera, highlight and brightness; data-cam1, data-map1 … override them on step 1.
+  · data-paper = how much of the screen the light Hertie panel covers (1 = all, .58 = left part, none = dark map).
+  · Images live in the assets/ folder next to this file. Swap a file there or change the src.
+  KEYS  → / Space next · ← back · T timer (turns red after 3:00) · F full screen · R replay slide
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@0,6..72,500;0,6..72,600;1,6..72,500;1,6..72,600&display=swap" rel="stylesheet">
+<style>
+:root{
+ /* EU side */ --bg:#040b1c;--bg2:#0a1d3d;--ink:#07132a;--gold:#ffcc33;
+ /* Hertie side */ --red:#b9011f;--red-t:#ee2f4a;--red-s:#ff7082;--grey:#958980;--grey-t:#b8b0a8;--paper:#f5f3f0;
+ --text:#f6f4f1;--line:rgba(200,190,180,.2);--card:rgba(11,26,54,.84);
+ --font:'Manrope','Segoe UI',system-ui,sans-serif;--serif:'Newsreader','Iowan Old Style',Georgia,serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:radial-gradient(120% 90% at 70% 10%,var(--bg2),var(--bg) 62%);color:var(--text);font-family:var(--font);-webkit-font-smoothing:antialiased}
+#map{position:fixed;inset:0;width:100vw;height:100vh;opacity:.5;transition:opacity 1.1s ease}
+#paper{position:fixed;left:0;top:0;height:100vh;width:0;background:var(--paper);border-right:0 solid var(--red);transition:width 1.25s cubic-bezier(.7,0,.2,1),border-width .6s;z-index:1}
+#paper.in{border-right-width:10px;box-shadow:24px 0 70px rgba(0,0,0,.45)}
+#stage{position:fixed;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;z-index:2}
+.slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .38s ease,visibility 0s .38s}
+.slide.active{opacity:1;visibility:visible;transition:opacity .55s ease}
+.scr{position:absolute;inset:-500px;pointer-events:none}
+.scr.l{background:linear-gradient(90deg,rgba(4,11,28,.94) 0,rgba(4,11,28,.94) 500px,rgba(4,11,28,.72) 1180px,rgba(4,11,28,0) 1500px)}
+.scr.f{background:rgba(4,11,28,.66)}
+.scr.t{background:linear-gradient(180deg,rgba(4,11,28,.92) 0,rgba(4,11,28,.92) 760px,rgba(4,11,28,0) 1010px)}
+.scr.b{background:linear-gradient(0deg,rgba(4,11,28,.95) 0,rgba(4,11,28,.95) 700px,rgba(4,11,28,0) 830px)}
+.pad{position:absolute;inset:0;padding:78px 110px 90px}
+.rv{opacity:0}
+.play .rv{animation:rv .75s cubic-bezier(.16,1,.3,1) both;animation-delay:calc(var(--d,0)*95ms + 80ms)}
+@keyframes rv{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:none}}
+@keyframes fade{to{opacity:1}}
+/* step-controlled elements */
+.slide [data-s]{opacity:0;transform:translateY(22px);transition:opacity .4s ease,transform .6s cubic-bezier(.16,1,.3,1);pointer-events:none}
+.slide [data-s].on{opacity:1;transform:none;transition-delay:calc(var(--sd,0)*120ms + 280ms)}
+.slide .scr[data-s]{transform:none;transition:opacity .9s ease}
+
+h1,h2,p,figure{margin:0}
+.eyebrow{font-size:19px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--grey-t);margin-bottom:18px}
+.eyebrow.gold{color:var(--gold)}.eyebrow.red{color:var(--red-s)}
+.h2{font-family:var(--serif);font-weight:600;font-size:70px;line-height:1.04;letter-spacing:-.02em;margin-bottom:24px}
+.lead{font-size:31px;line-height:1.38;color:#e9e5e0;font-weight:500;max-width:740px}
+.lead b{color:#fff;font-weight:800}
+.gold{color:var(--gold)}.red{color:var(--red-t)}.muted{color:var(--grey-t)}
+.src{position:absolute;left:110px;bottom:30px;font-size:13px;font-weight:500;color:rgba(184,176,168,.75);max-width:1150px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px 26px}
+.plate{background:#fff;border-radius:10px;padding:9px 16px;display:inline-flex}
+.plate img{height:46px;display:block}
+
+/* annotation box, the labelling motif (wage slide only) */
+.bb{position:relative;display:inline-block}
+.bb::before{content:"";position:absolute;inset:-6px -16px -2px;border:2.5px solid var(--red-t);clip-path:inset(0 100% 0 0);pointer-events:none}
+.bb::after{content:attr(data-tag);position:absolute;left:-16px;top:-6px;transform:translateY(-100%);background:var(--red);color:#fff;-webkit-text-fill-color:#fff;font:700 14px/1 var(--font);letter-spacing:.12em;text-transform:uppercase;padding:7px 11px;white-space:nowrap;opacity:0}
+.play .bb::before{animation:bbdraw .8s cubic-bezier(.65,0,.2,1) 3.4s forwards}
+.play .bb::after{animation:fade .25s 4.1s forwards}
+@keyframes bbdraw{to{clip-path:inset(0 0 0 0)}}
+
+/* ---------- light (Hertie) slides ---------- */
+.paper{color:var(--bg2)}
+.paper img.mul{mix-blend-mode:multiply}
+/* 1 opening */
+.portrait{position:absolute;left:110px;top:150px;width:430px;background:var(--paper)}
+.portrait img{display:block;width:430px;height:430px;object-fit:cover;border-bottom:7px solid var(--red);box-sizing:content-box}
+.portrait b{display:block;font-size:30px;font-weight:800;margin-top:18px;letter-spacing:-.01em}
+.portrait span{display:block;font-size:23px;line-height:1.4;color:#5e5650;font-weight:500;margin-top:5px}
+.open{position:absolute;left:630px;right:96px;top:70px;display:flex;flex-direction:column;gap:24px;align-items:flex-start}
+.bub{position:relative;background:var(--red);color:#fff;border-radius:30px;padding:26px 40px 30px;font-family:var(--serif);font-weight:600;letter-spacing:-.015em;line-height:1.08;box-shadow:0 18px 40px rgba(120,0,20,.22)}
+.bub::before{content:"";position:absolute;left:-26px;top:44px;border:18px solid transparent;border-right:30px solid var(--red);border-left:0}
+.bub.b1{font-size:64px;max-width:720px}
+.bub.b2{font-size:39px;max-width:700px;margin-left:50px}
+.bub.b3{font-size:46px;align-self:flex-end;white-space:nowrap;margin-right:6px}
+.bub.b3 cite{white-space:normal}
+.bub.b3::before{left:auto;right:70px;top:auto;bottom:-26px;border:16px solid transparent;border-top:28px solid var(--red);border-bottom:0}
+.bub cite{display:block;font:700 19px/1.3 var(--font);letter-spacing:.02em;margin-top:10px;color:#ffd9de}
+.warn{position:absolute;right:-30px;top:-34px;width:78px;height:70px;transform:rotate(9deg) scale(0);filter:drop-shadow(0 6px 10px rgba(0,0,0,.25))}
+.play .warn{animation:wpop .5s cubic-bezier(.2,1.5,.4,1) var(--wd,1.4s) forwards}
+@keyframes wpop{to{transform:rotate(9deg) scale(1)}}
+.oband{position:absolute;left:0;right:0;bottom:0;background:var(--red);color:#fff;padding:22px 110px 26px;font-size:28px;line-height:1.35;font-weight:600}
+.oband b{font-weight:800}
+.paper .src{color:#8a817a}
+/* 2 title */
+.tl{position:absolute;left:110px;top:0;bottom:0;width:770px;display:flex;flex-direction:column;justify-content:center}
+.event b{display:block;font-size:46px;font-weight:800;letter-spacing:-.02em;color:var(--red)}
+.event span{display:block;font-size:22px;font-weight:600;color:#5e5650;margin-top:4px}
+.title{font-family:var(--serif);font-weight:600;font-size:142px;line-height:.94;letter-spacing:-.035em;margin:44px 0 30px;color:var(--bg2)}
+.title i{font-weight:500}
+.sub{font-size:31px;line-height:1.3;font-weight:600;color:#2a3a59;max-width:720px}
+.who{background:var(--paper);margin-top:56px;padding-top:28px;border-top:2px solid rgba(149,137,128,.5)}
+.who b{display:block;font-size:27px;font-weight:800;letter-spacing:-.01em}
+.who img{display:block;height:74px;margin:14px 0 0 -4px}
+
+/* ---------- 3 wage ---------- */
+.wagepre{font-size:29px;line-height:1.4;color:#e9e5e0;font-weight:500;max-width:700px}
+.wagepre b{color:#fff;font-weight:800}
+.wage{font-size:205px;line-height:.95;letter-spacing:-.075em;font-weight:800;color:var(--red-t);margin:54px 0 4px;font-variant-numeric:tabular-nums}
+.wage sup{font-size:70px;letter-spacing:-.04em;vertical-align:top;position:relative;top:22px;margin-right:6px}
+.drain{margin-top:32px;width:720px;display:grid;gap:14px}
+.dr{display:grid;grid-template-columns:240px 1fr 150px;gap:18px;align-items:center;font-size:20px;color:var(--grey-t);font-weight:600}
+.dr b{color:#fff;font-size:23px;text-align:right;font-weight:800}
+.tr{height:24px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden}
+.tr i{display:block;height:100%;width:0;border-radius:6px;transition:width 1.4s cubic-bezier(.2,.8,.2,1) var(--dl,1.2s)}
+.play .tr i{width:var(--w)}
+.tr .g{background:linear-gradient(90deg,#b98a00,var(--gold))}.tr .c{background:linear-gradient(90deg,var(--red),var(--red-t))}
+.ev{margin-top:28px;width:720px;border-top:1px solid var(--line);padding-top:18px}
+.ev h4{margin:0 0 10px;font-size:15px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--grey-t)}
+.ev p{font-size:22px;line-height:1.5;font-weight:600;color:#e9e5e0;padding-left:22px;position:relative}
+.ev p::before{content:"";position:absolute;left:0;top:13px;width:10px;height:10px;background:var(--red-t)}
+
+/* ---------- 4 scale ---------- */
+.mega{font-size:186px;line-height:.92;letter-spacing:-.07em;font-weight:800;display:flex;align-items:baseline;gap:22px}
+.mega small{font-size:58px;letter-spacing:-.04em;color:var(--grey-t)}
+.megalab{font-size:31px;line-height:1.36;color:#e9e5e0;margin-top:18px;max-width:820px;font-weight:500}
+.megalab b{color:#fff;font-weight:800}
+.alone{position:absolute;left:110px;right:110px;bottom:70px;display:grid;grid-template-columns:14px 1fr;gap:28px;align-items:stretch}
+.alone::before{content:"";background:var(--red)}
+.alone p{font-family:var(--serif);font-weight:600;font-size:54px;line-height:1.08;letter-spacing:-.02em}
+.alone span{display:block;font-family:var(--font);font-size:25px;font-weight:600;color:var(--grey-t);margin-top:12px}
+
+/* ---------- 5 why the EU ---------- */
+.mkt{font-family:var(--serif);font-weight:600;font-size:84px;line-height:1.02;letter-spacing:-.025em;max-width:1100px}
+.bm{width:720px;margin-top:44px}
+.bm h4{font-size:17px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--grey-t);margin:0 0 12px}
+.bmrow{display:grid;grid-template-columns:1fr 44px 1.25fr;align-items:center;padding:17px 0;border-top:1px solid var(--line);font-size:29px;font-weight:800}
+.bmrow span{color:var(--grey-t);font-weight:600}.bmrow i{color:var(--gold);font-style:normal}
+
+/* ---------- 6 policy ---------- */
+.pol{width:1260px;margin:0 auto;display:flex;flex-direction:column;align-items:center}
+.hd{display:flex;flex-direction:column;align-items:center;transition:opacity .5s ease}
+.cod{border:1.5px solid rgba(184,176,168,.6);background:rgba(184,176,168,.1);border-radius:14px;padding:15px 34px;text-align:center;font-size:25px;font-weight:700}
+.cod span{color:var(--grey-t);font-weight:600}
+.vl{width:2px;height:42px;background:linear-gradient(var(--grey-t),var(--gold))}
+.ec{background:linear-gradient(100deg,#123a8c,#1b4fb8);border:1.5px solid var(--gold);border-radius:14px;padding:18px 60px;text-align:center;box-shadow:0 14px 50px rgba(27,79,184,.4)}
+.ec b{display:block;font-size:36px;letter-spacing:-.02em}.ec span{font-size:22px;color:#d6e0f5;font-weight:600}
+.fork{width:1260px;height:44px;display:block}
+.fork path{fill:none;stroke:var(--gold);stroke-width:2;stroke-dasharray:700;stroke-dashoffset:700}
+.play .fork path{animation:dash 1s ease 1s forwards}
+@keyframes dash{to{stroke-dashoffset:0}}
+.insts{display:grid;grid-template-columns:1fr 1fr;gap:44px;width:100%}
+.inst{padding:28px 34px 26px;border-radius:20px;border:1.5px solid var(--line);background:rgba(9,22,48,.94);transition:transform 1s cubic-bezier(.7,0,.2,1),opacity .5s ease,border-color .6s}
+.inst.i1{transform-origin:0 0}.inst.i2{transform-origin:100% 0}
+.inst h3{margin:0 0 4px;font-size:16px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--c)}
+.inst h4{margin:0 0 14px;font-family:var(--serif);font-weight:600;font-size:44px;letter-spacing:-.015em}
+.step{display:grid;grid-template-columns:42px 1fr;gap:18px;align-items:start;padding:11px 0}
+.step i{width:42px;height:42px;border-radius:50%;border:2px solid var(--c);color:var(--c);display:grid;place-items:center;font-weight:800;font-size:17px;font-style:normal}
+.step b{display:block;font-size:28px;letter-spacing:-.015em;line-height:1.5}
+.step span{display:block;font-size:20px;color:var(--grey-t);line-height:1.35;font-weight:500;max-height:0;opacity:0;overflow:hidden;transition:max-height .7s ease,opacity .5s ease}
+[data-at="1"] .hd,[data-at="2"] .hd{opacity:0}
+[data-at="1"] .i1{transform:translate(-55px,-250px) scale(1.22);border-color:var(--gold)}
+[data-at="1"] .i2,[data-at="2"] .i1{opacity:0}
+[data-at="2"] .i2{transform:translate(55px,-250px) scale(1.22);border-color:var(--gold)}
+[data-at="1"] .i1 .step span,[data-at="2"] .i2 .step span{max-height:60px;opacity:1;transition-delay:.5s}
+.side{position:absolute;top:236px}
+.side.r{right:110px;width:430px}.side.l{left:110px;width:520px}
+.photo img{display:block;width:520px;height:430px;object-fit:cover;border-radius:16px}
+.photo figcaption{font-size:12.5px;color:rgba(184,176,168,.8);margin-top:9px;font-weight:500}
+.label{background:#fff;color:#0c1a33;border-radius:16px;overflow:hidden;box-shadow:0 40px 110px rgba(0,0,0,.55),0 0 0 6px rgba(255,255,255,.08);transform:rotate(2deg)}
+.lhead{background:#1b4fb8;color:#fff;padding:16px 22px;display:flex;justify-content:space-between;align-items:center}
+.lhead b{font-size:30px;letter-spacing:-.03em;font-weight:800}.lhead span{font-size:11px;font-weight:800;letter-spacing:.14em;text-align:right;line-height:1.5}
+.lsub{padding:12px 22px 4px;font-size:12px;font-weight:800;letter-spacing:.08em;color:#5b6b85;text-transform:uppercase}
+.grades{padding:8px 22px 12px;position:relative}
+.gr{height:34px;margin:5px 0;width:0;clip-path:polygon(0 0,calc(100% - 17px) 0,100% 50%,calc(100% - 17px) 100%,0 100%);display:flex;align-items:center;padding-left:12px;font-weight:800;font-size:19px;color:#fff;transition:width .7s cubic-bezier(.2,.9,.3,1)}
+.on .gr{width:var(--w);transition-delay:calc(.9s + var(--i)*.09s)}
+.ptr{position:absolute;right:22px;top:52px;height:34px;width:84px;background:#0c1a33;color:#fff;clip-path:polygon(17px 0,100% 0,100% 100%,17px 100%,0 50%);display:flex;align-items:center;justify-content:center;padding-left:10px;font-weight:800;font-size:22px;opacity:0;transform:translateX(30px);transition:opacity .4s,transform .5s cubic-bezier(.2,1.2,.4,1)}
+.on .ptr{opacity:1;transform:none;transition-delay:1.9s}
+.lrows{border-top:2px solid #0c1a33;margin:0 22px;padding:10px 0 4px}
+.lrow{display:flex;justify-content:space-between;font-size:16px;font-weight:700;padding:6px 0}.lrow span{color:#0a8f52}
+.lfoot{padding:8px 22px 14px;font-size:10.5px;font-weight:700;letter-spacing:.08em;color:#7a879c;text-transform:uppercase}
+
+/* ---------- 7 implementation ---------- */
+.road{display:flex;gap:16px;height:372px;margin-top:8px}
+.stg{flex:1 1 0;min-width:0;position:relative;overflow:hidden;border-radius:18px;background:var(--card);border:1.5px solid var(--line);border-top:5px solid rgba(184,176,168,.45);padding:22px 24px;transition:flex-grow .9s cubic-bezier(.7,0,.2,1),opacity .5s ease,border-color .5s,background .5s}
+.stg small{display:block;font-size:17px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--grey-t);white-space:nowrap}
+.stg>b{display:block;font-family:var(--serif);font-weight:600;font-size:40px;letter-spacing:-.015em;margin:4px 0 0;white-space:nowrap}
+.stg .one{position:absolute;left:24px;top:124px;width:280px;font-size:23px;line-height:1.36;color:#e9e5e0;font-weight:500;transition:opacity .35s}
+.stg .more{position:absolute;left:24px;top:118px;width:590px;opacity:0;transition:opacity .35s}
+.stg .more li{font-size:25px;line-height:1.3;font-weight:600;padding:7px 0 7px 26px;position:relative;list-style:none}
+.stg .more ul{margin:0;padding:0}
+.stg .more li::before{content:"";position:absolute;left:0;top:18px;width:11px;height:11px;background:var(--gold)}
+.stg .by{position:absolute;left:24px;bottom:20px;width:590px;font-size:19px;font-weight:700;color:var(--gold);opacity:0;transition:opacity .35s;white-space:nowrap}
+.stg .by span{color:var(--grey-t);font-weight:600;letter-spacing:.1em;text-transform:uppercase;font-size:15px;margin-right:10px}
+.stg.done{border-top-color:var(--gold)}
+.stg.act{flex-grow:3.4;border-color:var(--gold);border-top-color:var(--gold);background:rgba(16,36,76,.95)}
+.stg.act small{color:var(--gold)}
+.stg.act .more,.stg.act .by{opacity:1;transition-delay:.55s}
+.slide:not([data-at="0"]) .stg .one{opacity:0}
+.slide:not([data-at="0"]) .stg:not(.act){opacity:.6}
+.outs{display:grid;gap:8px;margin-top:10px}
+.outs div{display:grid;grid-template-columns:190px 30px 1fr;font-size:22px;font-weight:700;align-items:center}
+.outs div span{color:var(--c)}.outs div i{font-style:normal;color:var(--c)}
+.loop{margin-top:34px;display:grid;grid-template-columns:150px 300px 1fr;gap:34px;align-items:center}
+.wheel{width:150px;height:150px;position:relative}
+.wheel svg{width:150px;height:150px;display:block}
+.play .wheel svg{animation:spin 9s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.wheel::before{content:"";position:absolute;left:50%;top:-12px;margin-left:-9px;border:9px solid transparent;border-top:12px solid #fff;z-index:1}
+.loop h3{margin:0;font-family:var(--serif);font-weight:600;font-size:44px;line-height:1.05;letter-spacing:-.015em}
+.loop h3 span{display:block;font-family:var(--font);font-size:19px;font-weight:600;color:var(--grey-t);letter-spacing:0;margin-top:8px;line-height:1.35}
+.cyc{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cyc div{padding:18px 20px;border-radius:14px;border:1.5px solid var(--line);font-size:23px;line-height:1.25;font-weight:700;opacity:.72}
+.cyc div::before{content:"";display:block;width:34px;height:6px;border-radius:3px;background:var(--c);margin-bottom:12px}
+.play .cyc div{animation:cyc 9s linear infinite;animation-delay:calc(var(--i)*3s)}
+@keyframes cyc{0%,33%{opacity:1;border-color:var(--c);background:rgba(255,255,255,.06)}36%,97%{opacity:.72;border-color:var(--line);background:none}100%{opacity:1}}
+
+/* ---------- 8 objections ---------- */
+.obj{display:grid;grid-template-columns:560px 1fr;gap:70px;align-items:center;padding:44px 0}
+.obj+.obj{border-top:1px solid var(--line)}
+.obj .q{font-family:var(--serif);font-style:italic;font-weight:500;font-size:54px;line-height:1.1;letter-spacing:-.015em;color:var(--grey-t)}
+.obj .a{display:block}
+.obj .n{font-size:150px;line-height:.9;margin-bottom:18px;letter-spacing:-.065em;font-weight:800;color:var(--gold);white-space:nowrap}
+.obj .n small{font-size:70px;letter-spacing:-.03em}
+.obj p{font-size:32px;line-height:1.3;font-weight:700}
+.obj p span{display:block;font-size:22px;font-weight:500;color:var(--grey-t);margin-top:10px;line-height:1.35}
+.obj .big{font-size:50px;line-height:1.14;font-weight:800;letter-spacing:-.02em}
+
+/* ---------- 9 close ---------- */
+.close{position:absolute;left:0;right:0;top:70px;text-align:center}
+.close .h2{font-size:112px;margin:0}
+.close .h2 i{color:var(--gold);font-weight:500}
+.bye{position:absolute;left:110px;right:110px;bottom:54px;display:flex;justify-content:space-between;align-items:center}
+.bye b{font-size:24px;font-weight:700}
+.bye .plate img{height:54px}
+
+/* chrome */
+#nav{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:7px 14px;border-radius:999px;background:rgba(4,11,28,.8);border:1px solid var(--line);opacity:0;transition:opacity .4s;z-index:10}
+body.nav-on #nav,#nav:hover{opacity:1}
+#dots{display:flex;gap:6px}
+#dots button{width:8px;height:8px;border-radius:50%;border:0;padding:0;background:rgba(184,176,168,.45);cursor:pointer}
+#dots button.on{background:var(--gold);transform:scale(1.35)}
+#nav .t{font:700 11.5px var(--font);color:var(--grey-t);letter-spacing:.1em;background:none;border:0;cursor:pointer;padding:3px 4px}
+#nav .t:hover{color:#fff}
+#timer{position:fixed;right:18px;top:14px;font:800 20px var(--font);font-variant-numeric:tabular-nums;color:var(--gold);background:rgba(4,11,28,.8);border:1px solid var(--line);border-radius:10px;padding:6px 12px;display:none;z-index:10}
+#timer.over{color:#fff;background:var(--red)}
+#bar{position:fixed;left:0;top:0;height:4px;background:linear-gradient(90deg,var(--red),var(--gold));width:0;transition:width .5s ease;z-index:10}
+</style>
+</head>
+<body>
+<canvas id="map" aria-hidden="true"></canvas>
+<div id="paper"></div>
+<div id="stage">
+
+<!-- 1 · OPENING: the person -->
+<section class="slide paper" data-name="Ephantus" data-paper="1" data-cam="title" data-map="title" data-dim=".9" data-steps="1">
+ <figure class="portrait rv">
+  <img class="mul" src="assets/ephantus-kanyugi.jpeg" alt="Ephantus Kanyugi">
+  <b>Ephantus Kanyugi</b><span>Nairobi. Labelled data for AI for years.<br>Today DLA Vice President.</span>
+ </figure>
+ <div class="open">
+  <p class="bub b1 rv">“Some of my co‑workers had suicidal thoughts.”<svg class="warn" viewBox="0 0 78 70"><path d="M39 5 74 65H4Z" fill="#ffcc33" stroke="#0a1d3d" stroke-width="5" stroke-linejoin="round"/><path d="M39 26v19" stroke="#0a1d3d" stroke-width="6.5" stroke-linecap="round"/><circle cx="39" cy="55" r="3.8" fill="#0a1d3d"/></svg></p>
+  <p class="bub b2 rv" data-d="9">“Sometimes I had to go to my priest because the work was so mentally exhausting.”<svg class="warn" style="--wd:2.3s" viewBox="0 0 78 70"><path d="M39 5 74 65H4Z" fill="#ffcc33" stroke="#0a1d3d" stroke-width="5" stroke-linejoin="round"/><path d="M39 26v19" stroke="#0a1d3d" stroke-width="6.5" stroke-linecap="round"/><circle cx="39" cy="55" r="3.8" fill="#0a1d3d"/></svg></p>
+  <p class="bub b3 rv" data-d="20">“You see the AI, but you don’t see us.”<cite>Joan Kinyua, DLA President, to the German Bundestag</cite></p>
+ </div>
+ <div class="oband" data-s="1+">Millions of people label and filter data by hand so that AI can learn.<br>In Kenya, <b>6 in 10</b> call the work mentally exhausting.</div>
+ <div class="src" data-s="0">Interview with Ephantus Kanyugi, Data Labelers Association (DLA), 15 October 2026 · Deutscher Bundestag (2026)</div>
+</section>
+
+<!-- 2 · TITLE -->
+<section class="slide paper" data-name="Title" data-paper=".58" data-cam="title" data-map="title" data-dim=".9">
+ <div class="tl">
+  <div class="event rv"><b>GPPN 2027</b><span>Technology and the Public Good · London, 18–20 February</span></div>
+  <h1 class="title rv">Homo post<br><i>Machina</i></h1>
+  <p class="sub rv">Using Europe’s market power to secure fair work in AI supply chains</p>
+  <div class="who rv"><b>Lux Fulda · Vani Jupudi · Felix Schulte-Altedorneburg</b><img class="mul" src="assets/hertie-school-logo.png" alt="Hertie School"></div>
+ </div>
+</section>
+
+<!-- 3 · KENYA: US$1.30 -->
+<section class="slide" data-name="US$1.30" data-cam="kenya" data-map="kenya" data-dim="1">
+ <div class="scr l"></div>
+ <div class="pad">
+  <div class="eyebrow red rv">Nairobi, Kenya</div>
+  <p class="wagepre rv">An AI developer pays <b>US$12.50</b> for an hour of data labelling. The person doing the work takes home about</p>
+  <div class="wage rv"><span class="bb" data-tag="take-home pay per hour"><sup>US$</sup><span data-count="1.30" data-from="12.50" data-dec="2" data-dur="2300" data-delay="900">12.50</span></span></div>
+  <div class="drain rv">
+   <div class="dr"><span>Developer pays</span><div class="tr"><i class="g" style="--w:100%"></i></div><b>US$12.50</b></div>
+   <div class="dr"><span>Worker takes home</span><div class="tr"><i class="c" style="--w:13%;--dl:2s"></i></div><b>US$1.30</b></div>
+  </div>
+  <div class="ev rv" data-d="9">
+   <h4>How we know</h4>
+   <p>We work with the Data Labelers Association in Nairobi</p>
+   <p>Their pay survey with WageIndicator</p>
+   <p>Our blog for the Centre for Digital Governance</p>
+  </div>
+ </div>
+ <div class="src">Perrigo (2023, TIME): OpenAI–Sama contract · US$1.30 is our estimate based on Tijdens (2026)</div>
+</section>
+
+<!-- 4 · ZOOM OUT: not only Kenya -->
+<section class="slide" data-name="Worldwide" data-cam="hubs" data-map="hubs" data-dim="1" data-steps="1">
+ <div class="scr t"></div>
+ <div class="scr b" data-s="1+"></div>
+ <div class="pad">
+  <div class="eyebrow red rv">Kenya is one of many</div>
+  <div class="mega rv"><span><span data-count="154">154</span>–<span data-count="435">435</span></span><small>million</small></div>
+  <p class="megalab rv">people do online gig work. That is up to <b>12.5%</b> of the world’s labour force.</p>
+ </div>
+ <div class="alone" data-s="1+"><p>If one country raises its standards alone,<br>the work moves to the next one.<span>Remotasks left Kenya in 2024, almost overnight.</span></p></div>
+ <div class="src" data-s="0">Datta et al. (2023, World Bank); Brandom (2024, Rest of World)</div>
+</section>
+
+<!-- 5 · WHY THE EU -->
+<section class="slide" data-name="Why the EU" data-cam="hubs" data-map="link" data-dim="1" data-steps="1" data-cam1="eu" data-map1="eu">
+ <div class="scr t" data-s="0"></div>
+ <div class="scr l" data-s="1+"></div>
+ <div class="pad">
+  <div data-s="0">
+   <div class="eyebrow gold">Where the models are sold</div>
+   <p class="mkt">All of this work ends up<br>in one market: <span class="gold">ours.</span></p>
+   <p class="megalab" style="margin-top:26px">450 million people. One rulebook.</p>
+  </div>
+ </div>
+ <div class="pad">
+  <div class="eyebrow gold" data-s="1+">Why the EU</div>
+  <h2 class="h2" data-s="1+" style="--sd:1;font-size:92px">The Brussels Effect</h2>
+  <p class="lead" data-s="1+" style="--sd:2">Whoever wants to sell in the EU follows EU rules. Most companies then apply them <b>worldwide</b>.</p>
+  <div class="bm" data-s="1+" style="--sd:4">
+   <h4>Two tools the EU already uses</h4>
+   <div class="bmrow"><span>Energy label</span><i>→</i>Fair AI label</div>
+   <div class="bmrow"><span>Ecodesign rules</span><i>→</i>Minimum labour standard</div>
+  </div>
+ </div>
+ <div class="src" data-s="1+">Bradford (2020); Regulation (EU) 2017/1369</div>
+</section>
+
+<!-- 6 · POLICY: one tree, two zooms -->
+<section class="slide" data-name="Policy" data-cam="eu" data-map="eu" data-dim=".16" data-steps="2">
+ <div class="scr f"></div>
+ <div class="pad" style="padding-top:56px">
+  <div class="eyebrow gold rv">Our proposal</div>
+  <h2 class="h2 rv" style="margin-bottom:18px">One policy, two instruments</h2>
+  <div class="pol">
+   <div class="hd">
+    <div class="cod rv">Data Labelers Association and unions <span>co-design and verify</span></div>
+    <div class="vl rv"></div>
+    <div class="ec rv"><b>European Commission</b><span>DG EMPL taskforce with the AI Office</span></div>
+    <svg class="fork" viewBox="0 0 1260 44"><path d="M630 0V16Q630 24 620 24H318Q308 24 308 32V44"/><path d="M630 0V16Q630 24 640 24H942Q952 24 952 32V44"/></svg>
+   </div>
+   <div class="insts">
+    <div class="rv" data-d="9"><div class="inst i1" style="--c:var(--gold)"><h3>Instrument 1</h3><h4>Make the work visible</h4>
+     <div class="step"><i>1</i><div><b>“Who Made This AI?” campaign</b><span>told by the workers themselves</span></div></div>
+     <div class="step"><i>2</i><div><b>Public accountability database</b><span>what vendors disclose, checked against what workers report</span></div></div>
+     <div class="step"><i>3</i><div><b>Fair AI label</b><span>one rating for pay and conditions</span></div></div>
+    </div></div>
+    <div class="rv" data-d="12"><div class="inst i2" style="--c:var(--gold)"><h3>Instrument 2</h3><h4>Make fair work a condition</h4>
+     <div class="step"><i>1</i><div><b>Labour standard</b><span>living wage, every hour paid, safe conditions</span></div></div>
+     <div class="step"><i>2</i><div><b>First: public AI contracts</b><span>a condition in every new EU tender</span></div></div>
+     <div class="step"><i>3</i><div><b>Then: the whole EU market</b><span>minimum requirements for every AI product sold here</span></div></div>
+    </div></div>
+   </div>
+  </div>
+ </div>
+ <div class="side r" data-s="1">
+  <div class="label">
+   <div class="lhead"><b>FAIR AI</b><span>WHO MADE<br>THIS AI?</span></div>
+   <div class="lsub">AI system · supply-chain rating</div>
+   <div class="grades">
+    <div class="gr" style="--i:0;--w:40%;background:#00a651">A</div>
+    <div class="gr" style="--i:1;--w:47%;background:#4cb848">B</div>
+    <div class="gr" style="--i:2;--w:54%;background:#bfd730;color:#0c1a33">C</div>
+    <div class="gr" style="--i:3;--w:61%;background:#ffe600;color:#0c1a33">D</div>
+    <div class="gr" style="--i:4;--w:68%;background:#fdb913;color:#0c1a33">E</div>
+    <div class="gr" style="--i:5;--w:75%;background:#f37021">F</div>
+    <div class="gr" style="--i:6;--w:82%;background:#ed1c24">G</div>
+    <div class="ptr">B</div>
+   </div>
+   <div class="lrows">
+    <div class="lrow">Pay vs. local living wage<span>✓ verified</span></div>
+    <div class="lrow">Training and waiting time paid<span>✓ verified</span></div>
+    <div class="lrow">Safe conditions, mental health<span>✓ verified</span></div>
+   </div>
+   <div class="lfoot">Illustrative mock-up</div>
+  </div>
+ </div>
+ <figure class="side l photo" data-s="2">
+  <img src="assets/data-annotators.jpg" alt="Two data annotators discussing how to label a dataset">
+  <figcaption>Photo: Nacho Kamenov &amp; Humans in the Loop, CC BY 4.0 (via Wikimedia Commons)</figcaption>
+ </figure>
+</section>
+
+<!-- 7 · IMPLEMENTATION -->
+<section class="slide" data-name="Implementation" data-cam="eu" data-map="eu" data-dim=".14" data-steps="4">
+ <div class="scr f"></div>
+ <div class="pad">
+  <div class="eyebrow gold rv">Implementation</div>
+  <h2 class="h2 rv">Pilot first, then scale</h2>
+  <div class="road rv">
+   <div class="stg" data-k="1"><small>Year 1</small><b>Pilot</b>
+    <p class="one">Set up the taskforce, start the campaign.</p>
+    <div class="more"><ul><li>Taskforce in DG EMPL, together with the AI Office</li><li>The Data Labelers Association co-designs the standard</li><li>Campaign starts, database is built</li></ul></div>
+    <div class="by"><span>Who</span>European Commission and DLA</div></div>
+   <div class="stg" data-k="2"><small>Years 2–3</small><b>Rollout</b>
+    <p class="one">Fair-work clauses in the EU’s own AI contracts.</p>
+    <div class="more"><ul><li>Fair-work clauses in the EU institutions’ AI tenders</li><li>Vendors disclose subcontractors and pay</li><li>Fair AI label starts, voluntary at first</li></ul></div>
+    <div class="by"><span>Who</span>EU contracting authorities</div></div>
+   <div class="stg" data-k="3"><small>Year 4</small><b>Stage gate</b>
+    <p class="one">An independent evaluation decides what comes next.</p>
+    <div class="more"><ul><li>Independent evaluation of wages, costs and relocation</li></ul>
+     <div class="outs">
+      <div style="--c:var(--gold)"><span>It works</span><i>→</i>extend to the whole market</div>
+      <div style="--c:var(--grey-t)"><span>Data gaps</span><i>→</i>simplify, extend the pilot</div>
+      <div style="--c:var(--red-s)"><span>Vendors resist</span><i>→</i>name them publicly, redesign</div>
+     </div></div>
+    <div class="by"><span>Who</span>Independent evaluators</div></div>
+   <div class="stg" data-k="4"><small>Year 5+</small><b>EU market</b>
+    <p class="one">Minimum requirements for every AI product sold in the EU.</p>
+    <div class="more"><ul><li>Minimum requirements for all AI products and services sold in the EU</li><li>Modelled on the Ecodesign rules</li></ul></div>
+    <div class="by"><span>Who</span>Commission proposes, Parliament and Council decide</div></div>
+  </div>
+  <div class="loop rv" data-d="8">
+   <div class="wheel"><svg viewBox="0 0 180 180"><g fill="none" stroke-width="26" transform="translate(90 90)">
+    <circle r="70" stroke="#ffcc33" stroke-dasharray="134.600 305.200" transform="rotate(-208)"/>
+    <circle r="70" stroke="#b8b0a8" stroke-dasharray="134.600 305.200" transform="rotate(-328)"/>
+    <circle r="70" stroke="#ee2f4a" stroke-dasharray="134.600 305.200" transform="rotate(-88)"/></g></svg></div>
+   <h3>It corrects itself<span>every year, for as long as it runs</span></h3>
+   <div class="cyc">
+    <div style="--i:0;--c:var(--gold)">Workers report anonymously</div>
+    <div style="--i:1;--c:var(--grey-t)">Auditors check every year</div>
+    <div style="--i:2;--c:var(--red-t)">Ratings are updated</div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<!-- 8 · OBJECTIONS -->
+<section class="slide" data-name="Objections" data-cam="eu" data-map="eu" data-dim=".14" data-steps="1">
+ <div class="scr f"></div>
+ <div class="pad">
+  <div class="eyebrow gold rv">What we expect to hear</div>
+  <div class="obj rv">
+   <p class="q">“This will make AI in Europe too expensive.”</p>
+   <div class="a"><div class="n">+11–16<small>%</small></div><p>on the contract price if workers’ pay doubles.<span>For comparison: OpenAI spent about US$5 billion on computing in 2024.</span></p></div>
+  </div>
+  <div class="obj" data-s="1+">
+   <p class="q">“The work will just move somewhere else.”</p>
+   <p class="big">The rule applies to every AI product sold in the EU, <b class="gold">wherever its data was labelled.</b></p>
+  </div>
+ </div>
+ <div class="src">Perrigo (2023); Epoch AI (2025); own calculation, all other costs held constant</div>
+</section>
+
+<!-- 9 · CLOSE -->
+<section class="slide" data-name="Close" data-cam="spread" data-map="spread" data-dim="1">
+ <div class="close"><h2 class="h2 rv">A standard that <i>travels.</i></h2></div>
+ <div class="bye"><b class="rv" data-d="14">Lux Fulda · Vani Jupudi · Felix Schulte-Altedorneburg</b><span class="plate rv" data-d="15"><img src="assets/hertie-school-logo.png" alt="Hertie School"></span></div>
+</section>
+
+</div>
+<div id="bar"></div>
+<div id="timer">0:00</div>
+<div id="nav"><div id="dots"></div><span class="t" id="count"></span><button class="t" id="tbtn" title="Timer (T)">TIMER</button><button class="t" id="fs" title="Full screen (F)">FULL</button></div>
+
+<script>
+/* ---------- helpers ---------- */
+const clamp=(n,a=0,b=1)=>Math.max(a,Math.min(b,n)),mix=(a,b,t)=>a+(b-a)*t,sm=t=>{t=clamp(t);return t*t*(3-2*t)},ease=t=>{t=clamp(t);return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2},TAU=Math.PI*2;
+
+/* ---------- map data: hand-simplified outlines (lon,lat), rasterised into dots ---------- */
+const LAND=[
+[-168,65.5,-162,70,-156,71.3,-141,69.7,-128,70,-115,68.5,-108,68,-96,68.5,-94,72,-85,69.5,-81,68.5,-82,66,-87,64.5,-93,61.5,-94.5,58.7,-92.5,57,-85,55.3,-82,53,-80,51.3,-79,54.5,-77,57.5,-78,62.3,-73,62,-69.5,59,-65,60.3,-61.5,56.5,-56,52.5,-59,50.5,-66,50.2,-65,48.5,-64.5,47,-61,46,-61,45.3,-66,43.6,-70,43.7,-70,41.7,-74,40.5,-75.8,37.5,-76,35,-81,31.5,-80,26.5,-80.5,25.2,-82,26.5,-82.7,28.5,-84,30,-89,30.2,-94,29.5,-97.3,27.5,-97.7,22.5,-96,19,-94.5,18.3,-91,18.8,-90.4,21,-87,21.5,-87.6,18.3,-88.8,15.9,-83.5,15.3,-83.5,11,-82,9,-79.5,9.6,-77.3,8.7,-77.9,7.2,-80.5,7.3,-83,8.3,-85.7,10,-87.5,13,-91.5,14,-94.5,16.2,-97,15.8,-102,18,-105.5,20.2,-106,23.2,-109.4,26.5,-112.5,29.5,-114.7,31.6,-114.5,30,-112.5,27,-110,23.2,-112,24.8,-115,28.5,-117,32.5,-120.6,34.6,-122.5,37.7,-124.3,40.4,-124,46.5,-123,48.3,-125,50,-128,52.5,-130.5,54.8,-134,58,-138,59.5,-145,60.3,-151.5,59.3,-154,57.5,-158,56.5,-163,54.8,-158,58.6,-162,59.8,-165.5,61.5,-164.5,63.2,-161,64.5,-166.5,64.6],
+[-73,78.2,-60,82,-33,83.5,-20,81,-18,76,-22,70.5,-32,68.2,-41,65,-43.5,60,-48.5,61,-52,64.5,-54,69,-58,75.5,-68,76.2],
+[-80,73.7,-72,71.5,-62,66.5,-65,62,-73,64.5,-78,66,-73,68,-85,70,-89,73],[-117,71.5,-108,73,-102,71,-105,69,-115,69.3],[-92,81,-62,82.5,-70,79,-80,76.3,-90,76.5],
+[-59.3,47.7,-55.5,51.5,-52.7,47.5,-56,46.8],[-85,22,-80,23.2,-74.2,20.2,-77.7,19.9,-82,21.5],[-74.4,18.4,-72.8,19.9,-68.4,18.6,-71,17.7],
+[-77.3,8.7,-75.3,10.8,-71.5,12.4,-70,11.5,-68,10.5,-64,10.6,-61.8,10.7,-60,8.5,-57,6,-52,4.8,-50,1.5,-50,-.2,-44.5,-2.5,-40,-2.9,-37,-4.8,-35,-6.5,-35,-9,-38.7,-13,-39,-17.5,-41,-22,-44.5,-23.2,-48.5,-26,-48.7,-28.5,-52,-32.5,-54,-34.7,-57,-34.5,-58.4,-34,-57,-36.3,-57.6,-38.2,-62,-39,-65,-41,-63.7,-42.8,-65.5,-45,-67.5,-46.3,-66,-48,-69,-51,-68.4,-52.4,-65.2,-54.8,-67,-55.3,-71,-54,-74.5,-52,-75.5,-47,-73.5,-42,-73.6,-37.5,-71.5,-33,-71.4,-28.5,-70.3,-23.5,-70.3,-18.3,-75.5,-14.5,-77.2,-12,-79.5,-7.5,-81.3,-5.5,-80,-2.5,-80.9,-1,-80,.8,-78.8,1.5,-77.5,4.2,-77.4,7],
+[-5.9,35.8,-2,35.1,3,36.9,10,37.3,11,35,10.2,33.8,15.3,32.3,19.5,30.3,20,32.6,25,31.7,31,31.5,32.3,31.2,32.5,29.9,34.2,27,35.6,24,37.2,21,37.4,18.7,39.5,15.5,42.8,12.8,43.3,11.5,44.5,10.4,51.2,11.9,50.8,9.5,48,4.5,44.5,1.5,41.6,-1.7,40.2,-2.8,39.2,-4.7,38.8,-6.5,39.5,-8,40.5,-10.5,40.6,-15,36.9,-17.9,34.8,-19.9,35.5,-23.5,32.9,-25.9,32.9,-28,30.9,-30,28,-33,25.7,-34,20,-34.8,18.4,-34.3,18.2,-32,15.2,-27,14.5,-22.5,11.8,-17.5,13.7,-11.5,12.2,-6,11.8,-4.5,9,-.7,9.5,1.2,9.7,3.8,8.5,4.5,6,4.3,4.5,6.3,1,5.9,-2,4.9,-4.5,5.2,-7.5,4.4,-9.3,5.5,-11.5,6.9,-13.3,8.6,-15,10.9,-16.8,12.5,-17.5,14.7,-16.5,16.3,-16.2,19,-17,21,-14.9,24.5,-13.2,27.7,-10,29.7,-9.7,31.5,-6.8,34],
+[49.3,-12.2,50.4,-15.5,47.8,-24.5,45,-25.4,43.5,-22.5,44.3,-17.5,47.5,-15],
+[-9,37,-9.4,38.8,-8.8,41.8,-9.2,43.1,-8,43.7,-3.8,43.5,-1.8,43.4,-1.2,45.8,-2.2,47.2,-4.7,48.2,-3,48.8,-1.6,48.7,-1.8,49.7,-1.2,49.4,.2,49.6,1.6,50.7,3.5,51.4,4.7,53,6.9,53.4,8.6,53.9,8.2,55.5,8.1,57.1,10.6,57.7,10.5,56.4,9.8,55,10.9,54,11.9,54.2,14.2,53.9,18.5,54.8,19.8,54.4,21,55.3,21,57,22.6,57.7,24.3,57.2,24.4,58.4,23.4,59.2,28,59.5,30.2,60,28.7,60.6,25,60.2,22.9,59.9,21.3,60.8,21.5,63,25.3,65.2,24.2,65.8,22.2,65.6,21.5,64.3,17.9,62.5,17.2,60.7,18.9,60,18,58.8,16.5,57,16,56.2,14.3,55.5,12.9,55.4,12.7,56.2,11.2,58.9,10.5,59.5,8,58.1,5.5,58.8,5,61,6,62.6,8.5,63.6,11.5,64.9,13,66.5,14.5,68.2,18,69.6,22,70.5,25.7,71.1,28.5,70.9,31,70.3,30,69.6,33,69.4,41,67.7,41,66.3,38,66.1,33.5,66.7,34.8,64.5,37.5,63.8,40,64.6,40.5,65.8,44,66.2,43.5,68.5,46,68.2,54,68.3,60,68.8,67,69,69,73,80,73.5,87,75.3,98,76.3,104.3,77.7,113,76,113.5,73.8,127,73.5,130,71,140,72.5,150,71.5,160,69.7,170,70,180,68.8,180,65,177.5,62.5,170.5,60,163.5,59.9,162,58,163,56,162,54.8,156.7,51,155.7,56.7,160.5,61.8,156.5,61.5,151.5,59.2,143,59.3,135.2,54.8,140.5,54,141.3,52.2,140.5,48.5,135.5,44,131.5,43,129.8,41.5,127.5,39.8,129.4,37,129.3,35.3,126.5,34.4,126.5,37.5,125,38,124.3,39.9,122.2,40.4,121.3,38.9,118,39.2,119,37.3,122.5,37.2,120,35.8,119.4,34.8,121.8,31.3,121.9,29.8,120,26.5,117,23.6,114,22.3,110.3,21.3,109.5,21.6,106.8,20.7,105.8,18.8,108.9,15.3,109.3,12,107,10.5,105,8.7,105,10.2,103.5,10.6,102.5,12.2,100.9,13.4,99.9,11.5,99.3,9.2,100.5,7.2,102.1,6.2,103.4,4.5,104.2,1.4,103.4,1.4,101.3,2.8,100.3,5.8,98.3,8,98.5,10.5,97.7,14.5,97.6,16.5,95.5,15.9,94.3,16.2,94.2,18.8,92.3,20.8,91.8,22.5,90.4,22.2,88.8,21.7,87,21.3,86.4,20,85,19.4,82.3,16.6,80.2,15.5,80.2,13.3,79.8,10.3,79,9.2,77.6,8.1,76.5,9,75.2,12,74,15,72.8,19.2,72.7,21.2,70.9,20.8,69,22.3,68.8,23.2,67.4,24.5,66.5,25.4,61.6,25.2,57.5,25.7,56.6,27.1,54.5,26.6,51.5,27.8,50.2,30,48.9,30.2,48,29.6,48.5,28.4,50.2,26.5,50.8,24.8,51.6,24.2,54,24.2,56.2,26.2,56.5,24.4,59.8,22.5,58.5,20.4,57.8,18.9,55,17,52.2,15.6,48.7,14,45,12.8,43.5,12.7,42.7,16.5,40.8,19.8,39.2,21.5,37.2,24.5,35,28.1,34.9,29.5,34.2,27.8,32.6,29.9,32.3,31.2,34.3,31.3,35,32.8,35.9,35.2,36.2,36.6,34.6,36.8,32.5,36.1,30.6,36.8,29.3,36.2,27.4,37,26.3,38.3,26.8,39.5,26.2,40,29,41,31.5,41.2,35,42,38,41,41.5,41.5,41.5,42.8,39.5,43.6,37,45,38.3,46.2,39.3,47.1,35.2,46.2,35,45.4,36.5,45.2,35.5,44.6,33.5,44.4,32.6,45.4,33.5,46.1,31.5,46.6,30.2,45.8,29.7,45.2,28.7,44,28,42.5,28.2,41.5,28.9,41.05,27.5,40.9,26.3,40.3,26,40.8,24,40.8,23.9,39.9,22.8,40.4,22.8,39.2,24,38,23.2,37.3,23.1,36.5,22.4,36.5,21.7,36.8,21.2,38.2,20.1,39.6,19.4,40.4,19.5,41.8,18.5,42.5,16,43.5,15,44.7,14.3,45.3,13.6,45.6,12.3,45.3,12.5,44.2,13.6,43.5,14.3,42.3,16,41.9,18.5,40.2,18.2,39.9,17,40.5,16.6,39.7,17.1,39,16.5,38.4,15.7,37.95,16,38.8,15.6,40,14.4,40.7,12.3,41.7,11,42.5,10.3,43.5,8.8,44.4,7.5,43.8,6,43.1,4.5,43.4,3.1,43.1,3.2,41.9,.8,40.9,-.3,39.4,.2,38.7,-.6,37.7,-2,36.8,-4.5,36.7,-5.6,36,-6.3,36.6,-7.4,37.2],
+[-5.7,50.1,-3,50.7,1.4,51.2,1.7,52.7,.3,53,-.2,54.2,-1.6,55.6,-3.2,56,-1.8,57.6,-4,57.7,-3.1,58.6,-5,58.6,-6.2,57,-5.5,55.4,-4.8,54.8,-3.2,54.9,-3,53.5,-4.5,53.3,-4.3,52.3,-5.2,51.8,-3.2,51.4,-4.5,51.1],
+[-10,51.6,-6.2,52.2,-6,53.5,-5.5,54.5,-6.2,55.2,-8.2,55.2,-10,54.2,-9.5,53],[-24,65.5,-22,66.4,-16,66.5,-13.6,65,-18.5,63.4,-22.5,63.9],
+[12.4,38,15.6,38.3,15.1,36.7,12.5,37.6],[8.2,41.2,9.7,41,9.6,39.1,8.4,39],[8.6,42.9,9.5,43,9.4,41.4,8.7,41.6],[23.5,35.6,26.3,35.3,26.2,34.95,23.5,35.2],[32.3,35.1,34.5,35.6,33.9,34.9,32.5,34.7],
+[51.5,71,56.5,71,68,76.5,60,76,54,73.5],
+[129.8,33.2,130.5,31.2,131.8,32.8,132.5,34.3,135.2,33.5,136.9,34.5,139,35,140.9,35.7,141.9,39.5,141.3,41.4,140,40.6,139.5,38,136.8,37.2,136,35.7,132.5,35.5,131,34.4],[140,41.6,141.5,45.4,145.3,43.5,143,42,141,42.5],[142,46,143.5,49.5,142.5,54.3,142,50],
+[120.2,23,121.5,25.2,121.9,24.5,120.9,22],[108.7,19.3,110.8,20,110.5,18.3,109,18.3],[79.8,8.5,80.2,9.8,81.8,7.5,81,6.2,80,6.1],
+[119.9,16.3,120.6,18.5,122.2,18.5,122.2,16.2,121.6,14.9,123.9,13.8,124.1,12.6,122.7,13.2,121,13.7,120.6,14.5],[122,11.8,125.3,12.5,125.7,11,124.9,10,123.2,9.1,122.4,10.5],[122,7,123.5,8.6,125.5,9.7,126.5,7.5,125.6,5.7,124,6.5],[117.2,8.4,119.5,11.3,119.7,10.5,117.8,8.5],
+[109.2,1.8,113,3.3,115.5,5.5,117,7,119,5.2,117.8,3.5,118.8,1,117.5,-.8,116.2,-3.8,114.5,-3.5,111.5,-3.2,110,-1.5,109,.3],[95.3,5.6,97.8,5.2,100.5,2.2,103.6,-1,106,-3,105.8,-5.8,104.3,-5.6,102,-3.8,100.3,-.8,98.5,1.8],[105.2,-6.7,108.6,-6.5,110.8,-6.4,114.5,-7.6,114.4,-8.6,108,-7.8,105.5,-7],
+[119.5,-5.5,120.5,-2.8,119.8,.8,121,1.3,125,1.6,123,.4,121,.4,121.5,-1,123.3,-.9,121.7,-2,122.8,-4.8,121.5,-4.6,120.6,-5.6],
+[131,-.8,134,-.8,135,-3.3,138,-1.6,141,-2.6,145,-4.3,147.8,-6,150.5,-10.5,147.5,-10,144.5,-7.7,142.5,-9.2,138.5,-8.2,137.7,-5.2,134,-3.9,132.8,-3,131.2,-1.3],
+[114,-22,113.5,-26,115.7,-31.5,115,-34.3,118,-35,123.5,-33.9,129,-31.6,131.5,-31.5,134.5,-33,135.8,-34.8,137.8,-32.6,138,-35.6,140.5,-38,143.5,-38.8,146.3,-39,149.9,-37.5,151.3,-33.8,153.5,-28.2,153,-25.5,149.5,-22.3,146.2,-19,145.4,-15,143.5,-14.2,142.5,-10.7,141.6,-13,140.9,-17.5,139,-17.5,135.5,-15,136.8,-12.2,132.5,-11.5,130.5,-12.5,129.5,-15,127,-14,125,-15.5,122.2,-17.2,121.5,-19.5,117,-20.7],
+[144.7,-40.8,148.3,-40.9,148,-43.3,146,-43.6,145.3,-42.3],[172.7,-34.5,175.5,-36.5,178.5,-37.7,177,-39.5,175.3,-41.6,174.7,-39.3,173.8,-39.2],[172.7,-40.5,174.3,-41.8,173,-43.2,170.5,-46,168.3,-46.6,166.5,-45.8,168.5,-44,171,-42.3]
+];
+const LAKES=[[47,45,51,47,53,46.5,53,42,54,37,50,37,49,41,47.3,43.2],[31.8,-.6,32.8,.3,34,.3,34.1,-.3,34,-1.5,33.4,-2.6,32,-2.6,31.7,-1.5]];
+const KENYA=[34,4.2,35.9,4.6,36.1,4.45,38.1,3.6,39.5,3.4,40.8,4.2,41.9,3.95,41,2.8,41,-.85,41.56,-1.67,40.9,-2.3,40.2,-2.9,39.67,-4.05,39.2,-4.68,37.75,-3.55,37.6,-3,34.05,-1.05,33.9,.1,34.5,1.1,35,1.7,34.45,3.2];
+const VEN=[-60,8.6,-61.3,6,-60.7,5.2,-62.7,3.7,-64.6,4.1,-63.5,2.2,-65.5,.7,-67.1,1.2,-67.4,2.2,-67.8,4.3,-67.5,6.2,-70,7,-72,7.1,-72.5,8.4,-73.3,9.2,-72.5,11.2,-71.3,12.6,-68,11.2,-64,11.2,-61.5,11];
+const IND=[68.2,23.6,71,24.5,69.7,27,73,29.8,74.5,32.7,74,34.6,77.8,35.4,79,32.5,81,30.2,80.2,28.8,84,27.4,88.1,26.4,88.2,27.9,89,26.9,92,26.9,92.2,27.8,97,28.3,97.1,27.1,95.2,26,94.5,24.6,93.3,24,93.2,22.2,92.3,23.2,91.3,23.2,92.2,25,89.9,25.3,89.8,26,88.3,25.9,88.2,25,88.9,23.2,89,21.5,87,20.6,86.5,19.6,84.5,18.3,82.5,16.1,80.6,15.2,80.6,13.2,80.1,10,79.3,8.8,77.6,7.7,76.2,9,74.6,12.5,73.1,16.5,72.4,19.2,72.3,21.3,70.6,20.4,68.6,22.3];
+const EU_MAIN=[-10,36,-5.6,36,-2,36.2,3,38,9,38.3,11.5,37.45,12.5,36.3,15,35.5,23.4,34.6,26.5,34.7,28.6,36,27.2,37.2,26.7,39,26,40,26.1,40.7,26.6,41.3,26.4,41.75,28,42,29,43.5,29.9,45.2,28.2,45.5,28.1,46.9,26.6,48.25,24.9,47.75,22.9,48,22.2,48.4,22.6,49.1,24.1,50.8,23.6,51.6,23.9,52.7,23.6,53.9,25.7,54.3,26.7,55.5,28.2,56.2,27.5,57.5,28.1,59.5,27.8,60.5,29.5,61.4,31.5,62.9,30.5,64.1,29.7,64.8,30.1,65.7,29.2,66.8,30,67.7,28.5,68.3,28.9,69.05,29.2,69.6,28,70.05,26.5,69.9,25.8,69,24.9,68.6,23.7,68.75,22,68.9,20.5,69.05,18.2,68.5,16.5,68,14.5,66.1,13.5,64.3,12.2,63,12.6,61.5,12.2,60.2,11.4,59,10.5,58.3,7.5,57.6,7.5,55.5,4,53.9,2.6,51.6,1.6,51.05,-2,49.95,-5.5,48.9,-10,48];
+const EU_IE=[-10.7,51.3,-6,51.9,-6,54,-7.3,54.1,-8.2,54.5,-7.2,55.4,-10.5,54.5],EU_CY=[32.2,34.5,34.7,34.5,34.7,35.8,32.2,35.8];
+const EU_EX=[[15.8,45.2,19.1,44.9,18.9,45.9,20.3,46.1,21.4,44.8,22.7,44.2,22.4,42.3,22.9,41.3,21,40.85,20.2,39.7,19.2,40.3,19.3,41.9,18.4,42.5,17.5,43.2,16.2,44.2],[6.1,46.2,7,45.9,9,46,10.4,46.6,9.6,47.5,8.5,47.7,7,47.4],[19.8,54.45,22.8,54.4,22.6,55.1,21,55.3,20,55]];
+function pip(p,x,y){let c=false;for(let i=0,j=p.length-2;i<p.length;j=i,i+=2){const xi=p[i],yi=p[i+1],xj=p[j],yj=p[j+1];if((yi>y)!==(yj>y)&&x<(xj-xi)*(y-yi)/(yj-yi)+xi)c=!c}return c}
+const any=(a,x,y)=>a.some(p=>pip(p,x,y));
+function tagOf(x,y){ // -1 sea · 0 land · 1 Kenya · 2 Venezuela · 3 India · 4 Philippines · 5 EU
+ if(pip(KENYA,x,y))return 1;
+ if(!any(LAND,x,y)||any(LAKES,x,y))return -1;
+ if(pip(VEN,x,y))return 2;if(pip(IND,x,y))return 3;
+ if(x>116&&x<127.5&&y>4.5&&y<19.5)return 4;
+ if((pip(EU_MAIN,x,y)||pip(EU_IE,x,y)||pip(EU_CY,x,y))&&!any(EU_EX,x,y))return 5;
+ return 0}
+const BOX1={x0:-12,x1:45,y0:34,y1:72},BOX2={x0:26,x1:52,y0:-12,y1:14};
+const inB=(b,x,y)=>x>=b.x0&&x<=b.x1&&y>=b.y0&&y<=b.y1;
+function layer(x0,x1,dx,y0,y1,dy,zone){const b={};for(let y=y0;y<=y1+1e-6;y+=dy)for(let x=x0;x<=x1+1e-6;x+=dx){const t=tagOf(x,y);if(t<0)continue;const z=zone?(inB(BOX1,x,y)?1:inB(BOX2,x,y)?2:0):0,k=t+'_'+z;(b[k]||(b[k]={t,z,p:[]})).p.push(x,y)}return Object.values(b)}
+const LA=layer(-178.8,180,2.4,-55,77,2,true),LB=layer(BOX1.x0,BOX1.x1,1.5,BOX1.y0,BOX1.y1,1),LC=layer(BOX2.x0,BOX2.x1,.5,BOX2.y0,BOX2.y1,.5);
+const NAIROBI=[36.82,-1.29],BRUSSELS=[4.35,50.85];
+const HUBS=[{n:'KENYA',p:[37.9,.6]},{n:'VENEZUELA',p:[-66,7.5]},{n:'INDIA',p:[79,22]},{n:'PHILIPPINES',p:[122,12.5]}];
+
+/* ---------- camera ---------- */
+const POSES={
+ title:{lon:25,lat:22,s:6.2,kx:.82,fx:1265,fy:450},
+ hubs:{lon:12,lat:18,s:5.5,kx:.82,fx:800,fy:520},
+ kenya:{lon:37.9,lat:.2,s:52,kx:1,fx:1170,fy:450},
+ eu:{lon:11,lat:53,s:18.5,kx:.62,fx:1170,fy:440},
+ spread:{lon:12,lat:18,s:5.5,kx:.82,fx:800,fy:560}
+};
+const cv=document.getElementById('map'),ctx=cv.getContext('2d'),stage=document.getElementById('stage'),paper=document.getElementById('paper');
+let W,H,K,OX,OY,DPR,cam={...POSES.title},fly=null,paperF=0;
+function setPaper(f){paperF=f;paper.style.width=(f>=1?W:f>0?OX+f*1600*K:0)+'px';paper.classList.toggle('in',f>0&&f<1)}
+function resize(){DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;cv.width=W*DPR;cv.height=H*DPR;K=Math.min(W/1600,H/900);OX=(W-1600*K)/2;OY=(H-900*K)/2;stage.style.transform=`translate(${OX}px,${OY}px) scale(${K})`;setPaper(paperF)}
+addEventListener('resize',resize);resize();
+function flyTo(name){const to=POSES[name]||POSES.hubs,from={...cam};
+ const same=['lon','lat','s','kx','fx','fy'].every(k=>Math.abs(from[k]-to[k])<1e-3);if(same){fly=null;return 0}
+ const far=Math.hypot(from.lon-to.lon,from.lat-to.lat),zoomed=Math.min(from.s,to.s)>14;
+ const dur=clamp(900+Math.abs(Math.log(to.s/from.s))*520+far*9,1000,2300);
+ fly={from,to,t0:performance.now(),dur,bump:zoomed&&far>25?.45:0};return dur}
+const MODES=['title','hubs','kenya','link','eu','spread'],mw={},mt={},since={};MODES.forEach(m=>{mw[m]=0;mt[m]=0;since[m]=0});
+function setMode(m){MODES.forEach(k=>{const v=k===m?1:0;if(v&&!mt[k])since[k]=performance.now();mt[k]=v})}
+
+/* ---------- drawing ---------- */
+const RED='238,47,74',GOLD='255,204,51',LANDC='rgb(170,164,158)';
+let S,FX,FY,last=performance.now(),now=last;
+const PX=(lon,lat)=>[FX+(lon-cam.lon)*S*cam.kx,FY-(lat-cam.lat)*S];
+function dots(p,r){ctx.beginPath();const kx=S*cam.kx;for(let i=0;i<p.length;i+=2){const x=FX+(p[i]-cam.lon)*kx,y=FY-(p[i+1]-cam.lat)*S;if(x<-9||y<-9||x>W+9||y>H+9)continue;ctx.moveTo(x+r,y);ctx.arc(x,y,r,0,TAU)}ctx.fill()}
+function hl(t){ // highlight colour + weight per tag: red = where the work is done, gold = the EU and what its standard reaches
+ const hub=t>=1&&t<=4,hot=hub?Math.max(mw.hubs,mw.link,mw.title*.85,t===1?mw.kenya:0):0,fair=hub?mw.spread:0,eu=t===5?Math.max(mw.eu,mw.spread,mw.link,mw.title*.85):0;
+ if(eu>.01)return[GOLD,eu];if(fair>hot)return[GOLD,fair];return[RED,hot]}
+function drawLayer(L,step,af){const r=clamp(step*S*.21,1.1*K,5*K);for(const b of L){const a=af(b.z);if(a<=.01)continue;const[c,w]=hl(b.t);
+ ctx.globalAlpha=a*.4*(1-w);ctx.fillStyle=LANDC;dots(b.p,r);
+ if(w>.01){ctx.globalAlpha=a*w;ctx.fillStyle=`rgb(${c})`;dots(b.p,r*1.1)}}}
+function rings(x,y,c,a,max,n=2,speed=2600){ctx.lineWidth=1.6*K;ctx.strokeStyle=`rgb(${c})`;for(let i=0;i<n;i++){const p=((now/speed)+i/n)%1;ctx.globalAlpha=a*(1-p)*.75;ctx.beginPath();ctx.arc(x,y,p*max,0,TAU);ctx.stroke()}}
+function pin(x,y,c,a){ctx.globalAlpha=a;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(x,y,3.6*K,0,TAU);ctx.fill();ctx.strokeStyle=`rgb(${c})`;ctx.lineWidth=2*K;ctx.beginPath();ctx.arc(x,y,8*K,0,TAU);ctx.stroke()}
+function label(x,y,t,c,a,size=15,align='left'){ctx.globalAlpha=a;ctx.font=`800 ${size*K}px Manrope,system-ui,sans-serif`;if('letterSpacing'in ctx)ctx.letterSpacing=(size*.14*K)+'px';ctx.textAlign=align;ctx.textBaseline='middle';ctx.fillStyle='rgba(4,11,28,.88)';const w=ctx.measureText(t).width,pad=7*K,x0=align==='left'?x-pad:align==='center'?x-w/2-pad:x-w-pad;ctx.fillRect(x0,y-size*K*.85,w+pad*2,size*K*1.7);ctx.fillStyle=c==='w'?'#fff':`rgb(${c})`;ctx.fillText(t,x,y)}
+function arc(A,B,c,a,prog,bend=.24,width=2){const mx=(A[0]+B[0])/2,my=(A[1]+B[1])/2;let nx=-(B[1]-A[1]),ny=B[0]-A[0];if(ny>0){nx=-nx;ny=-ny}const cx=mx+nx*bend,cy=my+ny*bend,pt=t=>[(1-t)*(1-t)*A[0]+2*(1-t)*t*cx+t*t*B[0],(1-t)*(1-t)*A[1]+2*(1-t)*t*cy+t*t*B[1]];
+ ctx.globalAlpha=a*.85;ctx.strokeStyle=`rgb(${c})`;ctx.lineWidth=width*K;ctx.setLineDash([7*K,6*K]);ctx.lineDashOffset=-now/45;ctx.beginPath();const n=48,m=Math.floor(n*clamp(prog));for(let i=0;i<=m;i++){const q=pt(i/n);i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])}ctx.stroke();ctx.setLineDash([]);
+ if(prog>=1){const q=pt((now/2200)%1);ctx.globalAlpha=a;ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(q[0],q[1],3.2*K,0,TAU);ctx.fill()}}
+function outline(p,c,a){ctx.globalAlpha=a;ctx.strokeStyle=`rgb(${c})`;ctx.lineWidth=2*K;ctx.lineJoin='round';ctx.shadowColor=`rgb(${c})`;ctx.shadowBlur=18*K;ctx.beginPath();for(let i=0;i<p.length;i+=2){const q=PX(p[i],p[i+1]);i?ctx.lineTo(q[0],q[1]):ctx.moveTo(q[0],q[1])}ctx.closePath();ctx.stroke();ctx.shadowBlur=0}
+function frame(t){now=t;const dt=Math.min(64,t-last);last=t;
+ if(fly){const u=clamp((t-fly.t0)/fly.dur),e=ease(u),f=fly.from,g=fly.to;cam.lon=mix(f.lon,g.lon,e);cam.lat=mix(f.lat,g.lat,e);cam.kx=mix(f.kx,g.kx,e);cam.fx=mix(f.fx,g.fx,e);cam.fy=mix(f.fy,g.fy,e);cam.s=Math.exp(mix(Math.log(f.s),Math.log(g.s),e))*(1-fly.bump*Math.sin(Math.PI*e));if(u>=1)fly=null}
+ const kf=1-Math.exp(-dt/380);MODES.forEach(m=>mw[m]+=(mt[m]-mw[m])*kf);
+ S=cam.s*K;FX=OX+cam.fx*K;FY=OY+cam.fy*K;
+ ctx.setTransform(DPR,0,0,DPR,0,0);ctx.clearRect(0,0,W,H);
+ const a1=sm((S-7.5)/4),a2=sm((.5*S-7.5)/4);
+ drawLayer(LA,2,z=>z===1?1-a1:z===2?1-a2:1);if(a1>.01)drawLayer(LB,1,()=>a1);if(a2>.01)drawLayer(LC,.5,()=>a2);
+ const nb=PX(...NAIROBI),br=PX(...BRUSSELS);
+ if(mw.hubs>.01)HUBS.forEach((h,i)=>{const q=PX(...h.p);rings(q[0],q[1],RED,mw.hubs,46*K,2,2400+i*150);label(q[0]+22*K,q[1]-20*K,h.n,'w',mw.hubs)});
+ if(mw.kenya>.01){outline(KENYA,RED,mw.kenya);pin(nb[0],nb[1],RED,mw.kenya);rings(nb[0],nb[1],RED,mw.kenya,34*K);label(nb[0]+18*K,nb[1]+2*K,'NAIROBI','w',mw.kenya);const top=PX(37.9,5.6);label(top[0],top[1],'KENYA','w',mw.kenya*.9,19,'center')}
+ if(mw.link>.01){let all=true;HUBS.forEach((h,i)=>{const q=PX(...h.p),pr=clamp((t-since.link-700-i*260)/1500);if(pr<1)all=false;rings(q[0],q[1],RED,mw.link,30*K);arc(q,br,GOLD,mw.link,pr,.22,2.2);label(q[0]+22*K,q[1]+22*K,h.n,'w',mw.link*.9,13)});
+  if(all||t-since.link>2200){pin(br[0],br[1],GOLD,mw.link);rings(br[0],br[1],GOLD,mw.link,60*K,2,3000);label(br[0]+18*K,br[1]-16*K,'EUROPEAN UNION',GOLD,mw.link,17)}}
+ if(mw.eu>.01){pin(br[0],br[1],GOLD,mw.eu);rings(br[0],br[1],GOLD,mw.eu,150*K,3,3600);label(br[0]+18*K,br[1]-2*K,'BRUSSELS',GOLD,mw.eu)}
+ if(mw.spread>.01){rings(br[0],br[1],GOLD,mw.spread,640*K,4,5200);pin(br[0],br[1],GOLD,mw.spread);HUBS.forEach((h,i)=>{const q=PX(...h.p),pr=clamp((t-since.spread-700-i*320)/1500);arc(br,q,GOLD,mw.spread,pr,.22,2);if(pr>=1){rings(q[0],q[1],GOLD,mw.spread,34*K);label(q[0]+16*K,q[1]+22*K,h.n,'w',mw.spread,14)}})}
+ ctx.globalAlpha=1;requestAnimationFrame(frame)}
+requestAnimationFrame(frame);
+
+/* ---------- deck ---------- */
+const slides=[...document.querySelectorAll('.slide')],dotsEl=document.getElementById('dots'),countEl=document.getElementById('count'),bar=document.getElementById('bar');
+let cur=-1,at=0,timerOn=false,t0=0,pending=0;
+const stepsOf=s=>+(s.dataset.steps||0);
+const A=(s,k,i)=>{for(;i>0;i--){const v=s.dataset[k+i];if(v!=null)return v}return s.dataset[k]};
+slides.forEach((s,i)=>{let d=0;s.querySelectorAll('.rv').forEach(el=>{if(el.dataset.d!=null)d=+el.dataset.d;el.style.setProperty('--d',d);d+=1.6});
+ const b=document.createElement('button');b.title=`${i+1} · ${s.dataset.name}`;b.setAttribute('aria-label',b.title);b.onclick=e=>{e.stopPropagation();go(i)};dotsEl.append(b)});
+function countUp(s){s.querySelectorAll('[data-count]').forEach((el,i)=>{const end=+el.dataset.count,start=+(el.dataset.from||0),dec=+(el.dataset.dec||0),dur=+(el.dataset.dur||1400),delay=+(el.dataset.delay||350+i*200),tok=el._tok=Symbol(),fmt=v=>v.toFixed(dec);el.textContent=fmt(start);const b=performance.now()+delay;(function step(n){if(el._tok!==tok)return;const p=clamp((n-b)/dur);el.textContent=fmt(start+(end-start)*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(step)})(performance.now())})}
+function play(s){s.classList.remove('play');void s.offsetWidth;s.classList.add('play');countUp(s)}
+function applyStep(s){s.dataset.at=at;
+ s.querySelectorAll('[data-s]').forEach(el=>{const v=el.dataset.s;el.classList.toggle('on',v.endsWith('+')?at>=parseInt(v):v.split(',').map(Number).includes(at))});
+ s.querySelectorAll('[data-k]').forEach(el=>{const k=+el.dataset.k;el.classList.toggle('act',k===at);el.classList.toggle('done',k<at)})}
+function view(s){const dur=flyTo(A(s,'cam',at));setMode(A(s,'map',at)||'');cv.style.opacity=A(s,'dim',at)||.5;setPaper(+(s.dataset.paper||0));return dur}
+function sync(){[...dotsEl.children].forEach((d,i)=>d.classList.toggle('on',i===cur));const n=stepsOf(slides[cur]);countEl.textContent=`${cur+1} / ${slides.length}`+(n?` · ${at}/${n}`:'');
+ const tot=slides.reduce((a,s)=>a+1+stepsOf(s),0),pos=slides.slice(0,cur).reduce((a,s)=>a+1+stepsOf(s),0)+1+at;bar.style.width=(pos/tot*100)+'%'}
+function go(n,instant,last){if(n<0||n>=slides.length||n===cur)return;const old=slides[cur],nx=slides[n];cur=n;at=last?stepsOf(nx):0;
+ slides.forEach(s=>{if(s!==nx)s.classList.remove('active','play')});
+ applyStep(nx);const dur=view(nx);
+ clearTimeout(pending);const show=()=>{nx.classList.add('active');play(nx)};
+ history.replaceState(null,'','#'+(n+1));if(instant||!old)show();else pending=setTimeout(show,dur?Math.min(dur*.62,1250):nx.dataset.paper||old.dataset.paper?520:260);sync()}
+function step(d){const s=slides[cur],n=stepsOf(s);
+ if(d>0&&at<n||d<0&&at>0){at+=d;applyStep(s);view(s);sync();return}
+ go(cur+d,false,d<0)}
+const timer=document.getElementById('timer');
+function toggleTimer(){timerOn=!timerOn;timer.style.display=timerOn?'block':'none';t0=performance.now()}
+setInterval(()=>{if(!timerOn)return;const s=Math.floor((performance.now()-t0)/1000);timer.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');timer.classList.toggle('over',s>180)},250);
+document.getElementById('tbtn').onclick=e=>{e.stopPropagation();toggleTimer()};
+const fsT=()=>{document.fullscreenElement?document.exitFullscreen():document.documentElement.requestFullscreen().catch(()=>{})};
+document.getElementById('fs').onclick=e=>{e.stopPropagation();fsT()};
+document.addEventListener('keydown',e=>{if(e.metaKey||e.ctrlKey||e.altKey)return;const k=e.key;
+ if(k==='ArrowRight'||k==='ArrowDown'||k==='PageDown'||k===' '||k==='Enter'){e.preventDefault();if(!e.repeat)step(e.shiftKey?-1:1)}
+ else if(k==='ArrowLeft'||k==='ArrowUp'||k==='PageUp'||k==='Backspace'){e.preventDefault();if(!e.repeat)step(-1)}
+ else if(k==='Home')go(0);else if(k==='End')go(slides.length-1);
+ else if(k==='f'||k==='F')fsT();else if(k==='t'||k==='T')toggleTimer();else if(k==='r'||k==='R'){at=0;applyStep(slides[cur]);view(slides[cur]);play(slides[cur]);sync()}});
+document.addEventListener('click',e=>{if(e.target.closest('#nav,a,button'))return;step(e.clientX<innerWidth*.25?-1:1)});
+let navT;addEventListener('mousemove',()=>{document.body.classList.add('nav-on');clearTimeout(navT);navT=setTimeout(()=>document.body.classList.remove('nav-on'),2200)});
+const start=Math.max(0,Math.min(slides.length-1,(parseInt(location.hash.slice(1))||1)-1));
+cam={...(POSES[slides[start].dataset.cam]||POSES.title)};paper.style.transition='none';go(start,true);requestAnimationFrame(()=>requestAnimationFrame(()=>paper.style.transition=''));
+addEventListener('hashchange',()=>{const n=parseInt(location.hash.slice(1));if(n)go(n-1)});
+</script>
+</body>
+</html>
