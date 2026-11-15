@@ -317,6 +317,20 @@ h1,h2,p,figure{margin:0}
 .play .cyc div{animation:cyc 9s linear infinite;animation-delay:calc(var(--i)*3s)}
 @keyframes cyc{0%,33%{opacity:1;border-color:var(--c);background:rgba(255,255,255,.06)}36%,97%{opacity:.72;border-color:var(--line);background:none}100%{opacity:1}}
 
+/* ---------- final: info box on the opening, question on the Brussels Effect slide ---------- */
+.know{position:absolute;left:110px;right:110px;top:640px;border:2.5px solid var(--red-t);background:rgba(4,11,28,.82);padding:26px 34px 28px;display:flex;align-items:center;justify-content:space-between;gap:40px}
+.ktag{position:absolute;left:-2.5px;top:-2.5px;transform:translateY(-100%);background:var(--red);color:#fff;font:700 15px/1 var(--font);letter-spacing:.14em;text-transform:uppercase;padding:8px 12px}
+.know p{font-size:42px;line-height:1.2;font-weight:600;color:#e9e5e0;letter-spacing:-.015em}
+.know p b{color:#fff;font-weight:800}
+.kjobs{display:grid;gap:12px;flex:none}
+.kjobs span{opacity:0;border:2px solid var(--gold);color:var(--gold);border-radius:10px;padding:10px 20px;font-size:25px;font-weight:800;white-space:nowrap;text-align:center;background:rgba(255,204,51,.07)}
+.play .kjobs span{animation:rv .6s cubic-bezier(.16,1,.3,1) 2.7s both}
+.play .kjobs span+span{animation-delay:3s}
+.whynot{position:absolute;left:110px;bottom:84px;font-family:var(--serif);font-weight:600;font-size:92px;line-height:1;letter-spacing:-.025em;opacity:0;transform-origin:0 100%}
+.whynot i{font-weight:500}
+.play .whynot{animation:pop .7s cubic-bezier(.2,1.5,.4,1) 2.4s both}
+@keyframes pop{from{opacity:0;transform:scale(.6) translateY(30px)}to{opacity:1;transform:none}}
+
 /* chrome */
 #nav{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:7px 14px;border-radius:999px;background:rgba(4,11,28,.8);border:1px solid var(--line);opacity:0;transition:opacity .4s;z-index:10}
 body.nav-on #nav,#nav:hover{opacity:1}
@@ -353,7 +367,11 @@ body.notes-on #notes{display:block}
   <p class="bub b1 rv">“Some of my co‑workers had suicidal thoughts.”</p>
   <p class="bub b3 rv" data-d="10">“You see the AI, but you don’t see us.”<cite>Joan Kinyua, DLA President, to the German Bundestag</cite></p>
  </div>
- <div class="oband one rv" data-d="17">Before AI can learn, people label its data by hand.</div>
+ <div class="know rv" data-d="17">
+  <span class="ktag">The work behind AI</span>
+  <p>Before AI can learn, people <b>label its data by hand.</b></p>
+  <div class="kjobs"><span>Data labelling</span><span>Content moderation</span></div>
+ </div>
  <div class="src">Interview with J. Kinyua and E. Kanyugi, Data Labelers Association (DLA), 15 October 2026 · Deutscher Bundestag (2026)</div>
  <aside class="notes"><p>This is Ephantus Kanyugi from Nairobi. For years he labelled data so that AI could learn. He told us: “Some of my co-workers had suicidal thoughts.”</p>
 <p>His colleague Joan Kinyua, President of the Data Labelers Association, told the German Bundestag: “You see the AI, but you don’t see us.”</p>
@@ -426,16 +444,17 @@ body.notes-on #notes{display:block}
  <div class="pad">
   <div class="eyebrow gold bar rv">Why the EU</div>
   <h2 class="h2 rv" style="font-size:92px">The Brussels Effect</h2>
-  <p class="lead rv">Whoever wants to sell in the EU follows EU rules. Many companies then apply them <b>worldwide</b>. The EU can use its market power to set <b class="grad">standards that travel</b> <span class="cite">(Bradford, 2020)</span>.</p>
+  <p class="lead rv">Whoever wants to sell in the EU follows EU rules. Many companies then apply them <b>worldwide</b>. These are <b class="grad">standards that travel</b> <span class="cite">(Bradford, 2020)</span>.</p>
   <div class="bm rv" data-d="8">
    <h4>Two tools the EU already uses</h4>
    <div class="bmrow"><span>Energy label</span><i>→</i>Fair AI label</div>
    <div class="bmrow"><span>Ecodesign rules</span><i>→</i>Minimum labour standard</div>
   </div>
  </div>
+ <p class="whynot">Why not also for <i class="grad">AI?</i></p>
  <div class="src">Energy labelling: Regulation (EU) 2017/1369 · Ecodesign: Regulation (EU) 2024/1781</div>
  <aside class="notes"><p>This is the Brussels Effect. Whoever wants to sell in the EU follows EU rules, and many companies then apply them worldwide. So the EU can use its market power to set standards that travel.</p>
-<p>We borrow two tools the EU already uses: the energy label becomes a Fair AI label, and the ecodesign rules become a minimum labour standard.</p>
+<p>We borrow two tools the EU already uses: the energy label becomes a Fair AI label, and the ecodesign rules become a minimum labour standard. So: why not also for AI?</p>
 <p><em>Backup: especially likely for AI, because models are trained once and sold everywhere (Bradford 2020).</em></p></aside>
 </section>
 
