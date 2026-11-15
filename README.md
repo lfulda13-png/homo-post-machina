@@ -4,8 +4,8 @@ Präsentation online: https://lfulda13-png.github.io/homo-post-machina/
 
 | Ordner | Inhalt |
 |---|---|
-| `Newest Version/` | aktuelle Präsentation (`GPPN_Draft3_Long_Lux.html`), hier wird gearbeitet |
-| `Alternatives/` | andere Fassungen (kurze Lux-Version, VaniLong, VaniShort) und `Old Drafts/` |
+| `Newest Version/` | aktuelle Präsentation (`GPPN Pitch Final.html`), hier wird gearbeitet |
+| `Alternatives/` | andere Fassungen (`Preliminary GPPN Draft.html` = Stand vor der finalen Fassung, kurze Lux-Version, VaniLong, VaniShort) und `Old Drafts/` |
 | `ToR Material/` | Aufgabenstellung (Call for Proposals) und unser Proposal |
 | `Zum Teilen/` | jede Fassung als Einzeldatei mit eingebetteten Bildern, zum Verschicken |
 | `Design/` | gemeinsames Aussehen und Technik aller Fassungen (`deck.css`, `deck.js`, Bilder in `assets/`) |

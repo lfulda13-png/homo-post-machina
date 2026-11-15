@@ -5,7 +5,7 @@ Ergebnis: "Zum Teilen/<Name>.html" fuer jedes Deck und index.html (= die Seite h
 Danach veroeffentlichen mit:  git add -A && git commit -m Update && git push"""
 import base64,glob,mimetypes,os,re
 here=os.path.dirname(os.path.abspath(__file__));out=os.path.join(here,'Zum Teilen');os.makedirs(out,exist_ok=True)
-ONLINE='GPPN_Draft3_Long_Lux.html'  # diese Datei aus "Newest Version/" wird als oeffentliche Seite veroeffentlicht
+ONLINE='GPPN Pitch Final.html'  # diese Datei aus "Newest Version/" wird als oeffentliche Seite veroeffentlicht
 DECKS=sorted(glob.glob(os.path.join(here,'Newest Version','*.html'))+glob.glob(os.path.join(here,'Alternatives','*.html')))
 rd=lambda p,m='r':open(os.path.join(here,p),m,**({} if 'b' in m else {'encoding':'utf-8'})).read()
 def data(m):
