@@ -330,6 +330,21 @@ h1,h2,p,figure{margin:0}
 .play .whynot{animation:pop .7s cubic-bezier(.2,1.5,.4,1) 2.4s both}
 @keyframes pop{from{opacity:0;transform:scale(.6) translateY(30px)}to{opacity:1;transform:none}}
 
+/* financial case: opens on the last click of the implementation slide */
+.fin{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:6px 60px}
+.fnum b{display:block;font-size:88px;line-height:1;letter-spacing:-.045em;font-weight:800;white-space:nowrap}
+.fnum.g b{color:var(--gold);filter:drop-shadow(0 0 22px rgba(255,204,51,.35))}
+.fnum span{display:block;font-size:25px;line-height:1.3;font-weight:600;color:#e9e5e0;margin-top:10px}
+.fnum i{display:block;font-style:normal;font-size:19px;color:var(--grey-t);font-weight:500;margin-top:2px}
+.fbar{grid-column:1/-1;position:relative;height:30px;border-radius:8px;background:rgba(255,255,255,.1);margin-top:18px;overflow:hidden}
+.fbar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--gold);box-shadow:0 0 18px var(--gold);transition:width .9s cubic-bezier(.2,.8,.2,1) 1s}
+.fin.on .fbar i{width:1.5%}
+.fbar span{position:absolute;right:14px;top:0;line-height:30px;font-size:15px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grey-t)}
+.fline{grid-column:1/-1;font-size:22px;font-weight:600;color:var(--grey-t);margin-top:12px}
+.fline b{color:#fff;font-weight:800}.fline i{font-style:normal;font-weight:500}
+[data-at="5"] .stg .one{opacity:1!important}
+[data-at="5"] .stg{opacity:1!important}
+
 /* chrome */
 #nav{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:7px 14px;border-radius:999px;background:rgba(4,11,28,.8);border:1px solid var(--line);opacity:0;transition:opacity .4s;z-index:10}
 body.nav-on #nav,#nav:hover{opacity:1}

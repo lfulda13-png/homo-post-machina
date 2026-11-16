@@ -331,6 +331,21 @@ h1,h2,p,figure{margin:0}
 .play .whynot{animation:pop .7s cubic-bezier(.2,1.5,.4,1) 2.4s both}
 @keyframes pop{from{opacity:0;transform:scale(.6) translateY(30px)}to{opacity:1;transform:none}}
 
+/* financial case: opens on the last click of the implementation slide */
+.fin{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:6px 60px}
+.fnum b{display:block;font-size:88px;line-height:1;letter-spacing:-.045em;font-weight:800;white-space:nowrap}
+.fnum.g b{color:var(--gold);filter:drop-shadow(0 0 22px rgba(255,204,51,.35))}
+.fnum span{display:block;font-size:25px;line-height:1.3;font-weight:600;color:#e9e5e0;margin-top:10px}
+.fnum i{display:block;font-style:normal;font-size:19px;color:var(--grey-t);font-weight:500;margin-top:2px}
+.fbar{grid-column:1/-1;position:relative;height:30px;border-radius:8px;background:rgba(255,255,255,.1);margin-top:18px;overflow:hidden}
+.fbar i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--gold);box-shadow:0 0 18px var(--gold);transition:width .9s cubic-bezier(.2,.8,.2,1) 1s}
+.fin.on .fbar i{width:1.5%}
+.fbar span{position:absolute;right:14px;top:0;line-height:30px;font-size:15px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--grey-t)}
+.fline{grid-column:1/-1;font-size:22px;font-weight:600;color:var(--grey-t);margin-top:12px}
+.fline b{color:#fff;font-weight:800}.fline i{font-style:normal;font-weight:500}
+[data-at="5"] .stg .one{opacity:1!important}
+[data-at="5"] .stg{opacity:1!important}
+
 /* chrome */
 #nav{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);display:flex;align-items:center;gap:12px;padding:7px 14px;border-radius:999px;background:rgba(4,11,28,.8);border:1px solid var(--line);opacity:0;transition:opacity .4s;z-index:10}
 body.nav-on #nav,#nav:hover{opacity:1}
@@ -518,7 +533,7 @@ body.notes-on #notes{display:block}
 </section>
 
 <!-- 8 -->
-<section class="slide" data-name="Implementation" data-time="35" data-cam="eu" data-map="eu" data-dim=".14" data-steps="4">
+<section class="slide" data-name="Implementation" data-time="45" data-cam="eu" data-map="eu" data-dim=".14" data-steps="5">
  <div class="scr f"></div>
  <div class="pad">
   <div class="eyebrow gold bar rv">Implementation</div>
@@ -546,25 +561,23 @@ body.notes-on #notes{display:block}
     <div class="more"><ul><li>Proposed minimum requirements for AI sold in the EU</li></ul></div>
     <div class="by"><span>Who</span>Commission proposes, Parliament and Council decide</div></div>
   </div>
-  <div class="loop rv" data-d="8">
-   <div class="wheel"><svg viewBox="0 0 180 180"><g fill="none" stroke-width="26" transform="translate(90 90)">
-    <circle r="70" stroke="#ffcc33" stroke-dasharray="134.600 305.200" transform="rotate(-208)"/>
-    <circle r="70" stroke="#b8b0a8" stroke-dasharray="134.600 305.200" transform="rotate(-328)"/>
-    <circle r="70" stroke="#ee2f4a" stroke-dasharray="134.600 305.200" transform="rotate(-88)"/></g></svg></div>
-   <h3>It corrects itself<span>every year</span></h3>
-   <div class="cyc">
-    <div style="--i:0;--c:var(--gold)">Workers report anonymously</div>
-    <div style="--i:1;--c:var(--grey-t)">Auditors check</div>
-    <div style="--i:2;--c:var(--red-t)">Ratings are updated</div>
-   </div>
+  <div class="fin" data-s="5">
+   <div class="fnum"><b>≈ €15 million</b><span>for the whole four-year pilot <i>our estimate</i></span></div>
+   <div class="fnum g"><b>1.5%</b><span>of the €1 billion the EU is mobilising for AI adoption <i>Apply AI Strategy, 2025</i></span></div>
+   <div class="fbar"><i></i><span>€1 billion for AI adoption</span></div>
+   <p class="fline">Budget lines already exist: <b>ESF+ EaSI</b> €762 million · <b>Digital Europe</b> €8.1 billion <i>(2021–27)</i></p>
   </div>
  </div>
+ <div class="src" data-s="5">€15 million is our own estimate (see notes) · European Commission (2025), Apply AI Strategy · ESF+ Regulation (EU) 2021/1057 · Council of the EU (2025) on the Digital Europe Programme</div>
  <aside class="notes"><p><em>One sentence per click, about 6 seconds each.</em></p>
-<p><em>Overview.</em> We pilot first, then scale, and it corrects itself every year: workers report anonymously, auditors check, ratings are updated.</p>
+<p><em>Overview.</em> We pilot first, then scale.</p>
 <p><em>Click 1.</em> Year one: the Commission sets up a taskforce in DG EMPL, and the DLA co-designs the standard.</p>
 <p><em>Click 2.</em> Years two and three: fair-work clauses in the EU institutions’ AI tenders, and the voluntary label.</p>
 <p><em>Click 3.</em> Year four: an independent evaluation, with three scenarios. If it works, we extend to the EU market. If results are mixed, we simplify and extend the pilot. If vendors resist, we name them publicly and redesign.</p>
-<p><em>Click 4.</em> Only then: proposed minimum requirements for AI sold in the EU, decided by Parliament and Council.</p></aside>
+<p><em>Click 4.</em> Only then: proposed minimum requirements for AI sold in the EU, decided by Parliament and Council.</p>
+<p><em>Click 5.</em> And this is affordable. We estimate the whole four-year pilot at about 15 million euros. That is 1.5 percent of the one billion euros the EU is mobilising to get AI adopted. And the budget lines already exist: the EaSI strand of the European Social Fund Plus, and Digital Europe.</p>
+<p><em>Backup, how we get to €15 million (own estimate, four years): taskforce of 8 staff about €5.5m (Commission standard cost of roughly €171,000 per post and year) · database and label register about €3.5m · campaign about €3m · worker reporting channel and independent audits about €3m · co-design grants for the DLA and unions about €1.2m · evaluation about €0.8m. Together about €17m, or about €11.5m if the staff are redeployed. €15 million is 2% of the EaSI strand (€762m, 2021–27) and 0.2% of Digital Europe (€8.1bn). Both programmes end in 2027; the pilot would need a line in the next long-term budget.</em></p>
+<p><em>Backup: it corrects itself every year. Workers report anonymously, auditors check, ratings are updated.</em></p></aside>
 </section>
 
 <!-- 9 -->
